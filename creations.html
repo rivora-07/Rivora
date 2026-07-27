@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>My Creations — Rivora</title>
+  <meta name="description" content="All your Rivora creations in one place. No account needed." />
+
+  <!-- Preconnect for faster fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#5dade2" />
+
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="css/base.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/creations.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+    <a href="island.html" class="nav-logo">🏝 Rivora</a>
+    <a href="island.html"
+       class="btn btn-ghost"
+       aria-label="Back to island">
+      ← Island
+    </a>
+  </nav>
+
+  <main class="page-section container">
+
+    <!-- Pixel -->
+    <div class="pixel-section animate-fade-in">
+      <div class="pixel-avatar animate-float"
+           role="img"
+           aria-label="Pixel mascot">
+        🐦
+      </div>
+      <div class="pixel-bubble"
+           aria-live="polite"
+           aria-atomic="true">
+        <p id="pixel-bubble-text">Loading your gallery...</p>
+      </div>
+    </div>
+
+    <!-- Page header -->
+    <div class="page-header">
+      <h1>🏖 My Creations</h1>
+    </div>
+
+    <!-- Gallery grid — populated by JavaScript -->
+    <div id="creations-gallery"
+         class="creations-grid stagger-children"
+         role="list"
+         aria-label="Your saved creations">
+      <!-- Cards added here by JavaScript -->
+    </div>
+
+    <!-- Empty state — shown when no creations exist -->
+    <div id="empty-state"
+         class="empty-state"
+         style="display: none;">
+      <div class="empty-icon" aria-hidden="true">🏖</div>
+      <h2>Your gallery is empty!</h2>
+      <p style="margin-top: 8px;">
+        Complete a challenge to save your first creation.
+      </p>
+      <a href="challenges.html"
+         class="btn btn-primary"
+         style="margin-top: 24px;">
+        Try a Challenge 🎒
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Modal for viewing a creation full size -->
+  <!--
+    This modal is built and controlled by modal.js.
+    It gets injected into the page automatically when modal.js loads.
+    We don't need to write any modal HTML here.
+  -->
+
+  <!-- Toast notification -->
+  <div id="toast"
+       class="toast"
+       role="status"
+       aria-live="polite"
+       aria-atomic="true">
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/pixel.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      initPixel('creations');
+      renderCreations();
+
+    });
+
+    /* ============================================================
+       renderCreations
+       Loads all saved creations and shows them as cards.
+    ============================================================ */
+    function renderCreations() {
+      const gallery    = document.getElementById('creations-gallery');
+      const emptyState = document.getElementById('empty-state');
+      const creations  = getAllCreations();
+
+      if (creations.length === 0) {
+        emptyState.style.display = 'block';
+        setPixelMessage('Your gallery is empty for now. Go make something! 🎨');
+        return;
+      }
+
+      setPixelMessage(
+        `You've made ${creations.length} creation${creations.length > 1 ? 's' : ''}! ` +
+        `Each one is yours. 🌟`
+      );
+
+      creations.forEach((creation, index) => {
+        const card = buildCreationCard(creation, index);
+        gallery.appendChild(card);
+      });
+    }
+
+    /* ============================================================
+       buildCreationCard
+       Creates one card element for a saved creation.
+    ============================================================ */
+    function buildCreationCard(creation, index) {
+      const article = document.createElement('article');
+      article.className = 'creation-card card animate-fade-in';
+      article.setAttribute('role', 'listitem');
+
+      /* Stagger the animation so cards appear one after another */
+      article.style.animationDelay = `${index * 60}ms`;
+
+      /* Format the date nicely e.g. "Jan 1, 2025" */
+      const date = new Date(creation.createdAt).toLocaleDateString('en-US', {
+        year:  'numeric',
+        month: 'short',
+        day:   'numeric'
+      });
+
+      article.innerHTML = `
+        <button class="creation-thumbnail-btn"
+                aria-label="View creation: ${creation.name}">
+          <img src="${creation.imageData}"
+               alt="${creation.name}"
+               class="creation-thumbnail"
+               loading="lazy" />
+        </button>
+        <div class="creation-info">
+          <h3 class="card-title creation-name">${creation.name}</h3>
+          <p class="card-meta">${date}</p>
+        </div>
+      `;
+
+      /* Open the modal when the thumbnail is clicked */
+      article.querySelector('.creation-thumbnail-btn')
+        .addEventListener('click', () => {
+          openCreationModal(creation);
+        });
+
+      return article;
+    }
+
+    /* ============================================================
+       openCreationModal
+       Opens the reusable modal with this creation's details.
+    ============================================================ */
+    function openCreationModal(creation) {
+      openRivoraModal({
+        title: creation.name,
+
+        contentHTML: `
+          <img
+            src="${creation.imageData}"
+            alt="${creation.name}"
+            style="
+              width: 100%;
+              max-height: 50vh;
+              object-fit: contain;
+              border-radius: 12px;
+              background: #d6eaf8;
+              margin-bottom: 16px;
+            "
+          />
+          <p style="font-size:0.85rem; color:#5d6d7e; margin-bottom:20px;">
+            Created ${new Date(creation.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'long', day: 'numeric'
+            })}
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button
+              class="btn btn-coral"
+              onclick="downloadFromModal('${creation.id}')"
+              aria-label="Download this creation">
+              Download 📥
+            </button>
+            <button
+              class="btn btn-ghost"
+              onclick="deleteFromModal('${creation.id}', '${creation.name.replace(/'/g, "\\'")}')"
+              aria-label="Delete this creation">
+              Delete 🗑
+            </button>
+          </div>
+        `,
+
+        onClose: () => {
+          /* Nothing special needed when modal closes */
+        }
+      });
+    }
+
+    /* ============================================================
+       downloadFromModal
+       Downloads the creation as a PNG file.
+    ============================================================ */
+    function downloadFromModal(id) {
+      const creation = getCreationById(id);
+      if (!creation) return;
+
+      const link      = document.createElement('a');
+      link.href       = creation.imageData;
+      const safeName  = creation.name.replace(/[^a-z0-9]/gi, '_');
+      link.download   = `${safeName}_rivora.png`;
+      link.click();
+
+      showToast('Downloading! 📥');
+    }
+
+    /* ============================================================
+       deleteFromModal
+       Asks for confirmation then deletes a creation.
+    ============================================================ */
+    function deleteFromModal(id, name) {
+      if (!confirm(`Delete "${name}"? This can't be undone.`)) return;
+
+      deleteCreation(id);
+      closeRivoraModal();
+
+      /* Re-render the gallery to reflect the deletion */
+      const gallery = document.getElementById('creations-gallery');
+      gallery.innerHTML = '';
+      renderCreations();
+
+      showToast('Creation deleted.');
+    }
+  </script>
+
+</body>
+</html>

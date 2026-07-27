@@ -1,0 +1,169 @@
+/* ============================================================
+   learn.css — Learn Section Styles
+   
+   Used by: learn.html
+   
+   Two views exist in learn.html:
+   1. Lesson list — all lessons shown as cards
+   2. Lesson detail — one lesson with interactive demo
+   
+   This file styles both views.
+   ============================================================ */
+
+/* ============================================================
+   LESSON LIST VIEW
+   ============================================================ */
+
+/*
+   The lessons grid:
+   One column on mobile, two columns on tablet and desktop.
+   auto-fit means it figures out how many columns fit
+   without us having to specify breakpoints manually.
+*/
+.lessons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 600px) {
+  .lessons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Individual lesson card */
+.lesson-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  /* Cards are not links themselves — they contain a button */
+  cursor: default;
+}
+
+/* The emoji on the left of each card */
+.lesson-emoji {
+  font-size: 2.5rem;
+  flex-shrink: 0; /* never shrink the emoji */
+  line-height: 1;
+}
+
+/* Text block in the middle of the card */
+.lesson-info {
+  flex: 1; /* take up remaining space */
+  min-width: 0; /* allow text to shrink/wrap if needed */
+}
+
+/* Tagline below the lesson title */
+.lesson-tagline {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  margin-bottom: 6px;
+  margin-top: 2px;
+}
+
+/* Small button variant used in lesson cards */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  min-height: 36px;
+  white-space: nowrap; /* don't wrap button text */
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   LESSON DETAIL VIEW
+   ============================================================ */
+
+/* The explanation card that holds the lesson text */
+.lesson-explanation {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+/* Highlight key words in the lesson explanation */
+.lesson-explanation strong {
+  color: var(--color-ocean-deep);
+}
+
+/* Space between paragraphs in the lesson */
+.lesson-explanation p + p {
+  margin-top: var(--space-sm);
+}
+
+/* ============================================================
+   DEMO IMAGE AREA
+   The image the child experiments on during a lesson.
+   ============================================================ */
+
+/* Container keeps the image at a consistent size */
+.demo-image-container {
+  background-color: var(--color-sky);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  position: relative;
+}
+
+/* The demo image itself */
+.demo-image {
+  max-height: 300px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+
+  /*
+     CSS transitions make filter and transform changes
+     animate smoothly instead of jumping.
+     This is what makes the lesson feel interactive
+     and fun rather than mechanical.
+  */
+  transition:
+    filter    var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+/* Loading state — shown while the image is downloading */
+.demo-image-container::before {
+  content: '🖼 Loading...';
+  position: absolute;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  /* Hidden once the image loads (image covers this) */
+}
+
+/* ============================================================
+   LESSON INTERACTIVE CARD
+   The card that contains the demo image + slider
+   ============================================================ */
+.lesson-interactive {
+  /* Card styles come from components.css */
+  /* We just add a little extra padding here */
+  padding: var(--space-lg);
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+
+/* On very small screens, stack lesson card content vertically */
+@media (max-width: 400px) {
+  .lesson-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lesson-info {
+    width: 100%;
+  }
+
+  .btn-sm {
+    width: 100%;
+    justify-content: center;
+  }
+}

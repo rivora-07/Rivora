@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Editor — Rivora</title>
+  <meta name="description" content="Rivora's image editor. Upload your image and make something amazing!" />
+
+  <!-- Preconnect for faster fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#5dade2" />
+
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="css/base.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/editor.css" />
+
+  <style>
+    /* Challenge prompt bar shown at top when coming from a challenge */
+    .challenge-prompt-bar {
+      background: linear-gradient(135deg, #fdebd0, #fef9e7);
+      border-bottom: 2px solid var(--color-sand-warm);
+      padding: var(--space-sm) var(--space-lg);
+      display: none;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .challenge-prompt-bar strong {
+      color: var(--color-ocean-deep);
+    }
+
+    .challenge-prompt-bar p {
+      font-size: 0.85rem;
+      color: var(--color-text-soft);
+      margin: 0;
+    }
+
+    /* Highlight the drop zone when dragging a file over it */
+    .canvas-container.drag-over {
+      outline: 3px dashed var(--color-ocean);
+      outline-offset: 4px;
+      background-color: rgba(93, 173, 226, 0.05);
+    }
+
+    .nav-editor-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Editor navigation">
+    <a href="island.html"
+       class="nav-logo"
+       aria-label="Return to Rivora island">
+      🏝 Rivora
+    </a>
+    <span class="nav-editor-label" aria-current="page">🎨 Editor</span>
+  </nav>
+
+  <!-- Challenge prompt bar -->
+  <div id="challenge-prompt"
+       class="challenge-prompt-bar"
+       role="complementary"
+       aria-label="Current challenge prompt">
+    <!-- Populated by editor.js when ?challenge= is in the URL -->
+  </div>
+
+  <!-- Main editor layout -->
+  <div class="editor-page">
+
+    <div class="editor-main">
+
+      <!-- ======== CANVAS AREA ======== -->
+      <div>
+
+        <!--
+          Hidden text description of the canvas.
+          Screen readers read this to tell users what is on the canvas.
+          editor.js updates this text when an image is loaded.
+        -->
+        <p id="canvas-desc" class="sr-only">
+          No image loaded. Upload a photo to begin editing.
+        </p>
+
+        <div id="canvas-container"
+             class="canvas-container"
+             role="region"
+             aria-label="Image editing canvas"
+             aria-describedby="canvas-desc">
+
+          <!-- Upload prompt shown before any image is loaded -->
+          <div id="upload-prompt" class="upload-prompt">
+            <span class="upload-icon" aria-hidden="true">🖼</span>
+            <h2 style="font-size: 1.3rem; margin-bottom: 8px;">
+              Upload your image
+            </h2>
+            <p>Tap here, or drag an image onto this area</p>
+
+            <!--
+              The label acts as a styled button.
+              Clicking it triggers the hidden file input below.
+            -->
+            <label for="file-input"
+                   class="btn btn-primary"
+                   style="margin-top: 16px; cursor: pointer;">
+              Choose a Photo 📷
+            </label>
+
+            <input
+              type="file"
+              id="file-input"
+              accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+              style="display: none;"
+              aria-label="Upload image file"
+            />
+          </div>
+
+          <!-- The canvas where the image is drawn and edited -->
+          <!-- Hidden until an image is loaded -->
+          <canvas
+            id="editor-canvas"
+            style="display: none;"
+            role="img"
+            aria-label="Your edited image"
+            aria-describedby="canvas-desc"
+            tabindex="0">
+          </canvas>
+
+        </div>
+
+        <!-- Pixel mascot below the canvas -->
+        <div class="pixel-section" style="margin-top: 16px;">
+          <div class="pixel-avatar"
+               style="width: 48px; height: 48px; font-size: 1.5rem;"
+               role="img"
+               aria-label="Pixel mascot">
+            🐦
+          </div>
+          <div class="pixel-bubble"
+               style="padding: 10px 14px;"
+               aria-live="polite"
+               aria-atomic="true">
+            <p id="pixel-bubble-text" style="font-size: 0.9rem;">
+              Upload a photo to start! 📷
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======== CONTROLS PANEL ======== -->
+      <!--
+        Starts at 40% opacity and not clickable.
+        editor.js enables it fully once an image is loaded.
+      -->
+      <aside id="controls-panel"
+             class="controls-panel"
+             style="opacity: 0.4; pointer-events: none;"
+             aria-label="Image editing controls">
+
+        <h2 class="controls-title">Tools</h2>
+
+        <div class="tool-row"
+             role="toolbar"
+             aria-label="Transform tools">
+
+          <button class="tool-btn"
+                  id="btn-rotate-left"
+                  aria-label="Rotate image left 90 degrees">
+            <span class="tool-icon" aria-hidden="true">↺</span>
+            Rotate L
+          </button>
+
+          <button class="tool-btn"
+                  id="btn-rotate-right"
+                  aria-label="Rotate image right 90 degrees">
+            <span class="tool-icon" aria-hidden="true">↻</span>
+            Rotate R
+          </button>
+
+          <button class="tool-btn"
+                  id="btn-flip-h"
+                  aria-label="Flip image horizontally">
+            <span class="tool-icon" aria-hidden="true">↔</span>
+            Flip H
+          </button>
+
+          <button class="tool-btn"
+                  id="btn-flip-v"
+                  aria-label="Flip image vertically">
+            <span class="tool-icon" aria-hidden="true">↕</span>
+            Flip V
+          </button>
+
+          <button class="tool-btn"
+                  id="btn-reset"
+                  aria-label="Reset all changes to original image">
+            <span class="tool-icon" aria-hidden="true">✕</span>
+            Reset
+          </button>
+
+        </div>
+
+        <div class="control-divider" aria-hidden="true"></div>
+
+        <h2 class="controls-title">Adjustments</h2>
+
+        <!-- Brightness -->
+        <div class="control-group">
+          <div class="control-label">
+            <label for="slider-brightness">☀️ Brightness</label>
+            <span class="control-value"
+                  id="val-brightness"
+                  aria-hidden="true">0</span>
+          </div>
+          <input
+            type="range"
+            class="control-slider"
+            id="slider-brightness"
+            min="-100"
+            max="100"
+            value="0"
+            aria-label="Brightness"
+            aria-valuemin="-100"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          />
+        </div>
+
+        <!-- Contrast -->
+        <div class="control-group">
+          <div class="control-label">
+            <label for="slider-contrast">⚫ Contrast</label>
+            <span class="control-value"
+                  id="val-contrast"
+                  aria-hidden="true">0</span>
+          </div>
+          <input
+            type="range"
+            class="control-slider"
+            id="slider-contrast"
+            min="-100"
+            max="100"
+            value="0"
+            aria-label="Contrast"
+            aria-valuemin="-100"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          />
+        </div>
+
+        <!-- Saturation -->
+        <div class="control-group">
+          <div class="control-label">
+            <label for="slider-saturation">🎨 Saturation</label>
+            <span class="control-value"
+                  id="val-saturation"
+                  aria-hidden="true">0</span>
+          </div>
+          <input
+            type="range"
+            class="control-slider"
+            id="slider-saturation"
+            min="-100"
+            max="100"
+            value="0"
+            aria-label="Saturation"
+            aria-valuemin="-100"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          />
+        </div>
+
+        <!-- Blur -->
+        <div class="control-group">
+          <div class="control-label">
+            <label for="slider-blur">💧 Blur</label>
+            <span class="control-value"
+                  id="val-blur"
+                  aria-hidden="true">0</span>
+          </div>
+          <input
+            type="range"
+            class="control-slider"
+            id="slider-blur"
+            min="0"
+            max="20"
+            value="0"
+            aria-label="Blur"
+            aria-valuemin="0"
+            aria-valuemax="20"
+            aria-valuenow="0"
+          />
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- ======== ACTION BAR (bottom) ======== -->
+    <footer id="editor-actions"
+            class="editor-actions"
+            style="opacity: 0.4; pointer-events: none;"
+            role="toolbar"
+            aria-label="Save and undo actions">
+
+      <div class="editor-actions-left">
+        <button id="btn-undo"
+                class="btn btn-secondary"
+                disabled
+                aria-label="Undo last change (Ctrl+Z)">
+          ↩ Undo
+        </button>
+        <button id="btn-redo"
+                class="btn btn-secondary"
+                disabled
+                aria-label="Redo last undone change (Ctrl+Y)">
+          ↪ Redo
+        </button>
+      </div>
+
+      <div class="editor-actions-right">
+        <a href="challenges.html"
+           class="btn btn-ghost"
+           aria-label="Cancel and go back to challenges">
+          Cancel
+        </a>
+        <button id="btn-save"
+                class="btn btn-coral btn-lg"
+                aria-label="Save your creation and finish">
+          Save & Finish 🎉
+        </button>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast"
+       class="toast"
+       role="status"
+       aria-live="polite"
+       aria-atomic="true">
+  </div>
+
+  <!-- Scripts — order matters, load storage first -->
+  <script src="js/storage.js"></script>
+  <script src="js/challenges.js"></script>
+  <script src="js/pixel.js"></script>
+  <script src="js/editor.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPixel('editor');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Today's Challenge — Rivora</title>
+  <meta name="description" content="Rivora's daily creative challenge. No wrong answers — just your imagination!" />
+
+  <!-- Preconnect for faster fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#5dade2" />
+
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="css/base.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/challenges.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+    <a href="island.html" class="nav-logo">🏝 Rivora</a>
+    <a href="island.html"
+       class="btn btn-ghost"
+       aria-label="Back to island">
+      ← Island
+    </a>
+  </nav>
+
+  <main class="page-section container">
+
+    <!-- Pixel -->
+    <div class="pixel-section animate-fade-in">
+      <div class="pixel-avatar animate-float"
+           role="img"
+           aria-label="Pixel, your friendly guide">
+        🐦
+      </div>
+      <div class="pixel-bubble"
+           aria-live="polite"
+           aria-atomic="true">
+        <p id="pixel-bubble-text">Loading your challenge...</p>
+      </div>
+    </div>
+
+    <!-- Page heading -->
+    <div class="page-header">
+      <h1>🎒 Today's Challenge</h1>
+    </div>
+
+    <!-- Featured Today's Challenge -->
+    <section aria-label="Today's featured challenge">
+      <div class="challenge-featured-label">
+        <span class="badge">✨ Today's Mission</span>
+      </div>
+      <div id="todays-challenge"
+           class="card challenge-featured animate-fade-in">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Challenge Tips (dismissable) -->
+    <div id="challenge-tips"
+         class="challenge-tips card animate-slide-up"
+         style="display: none; margin-top: 24px;"
+         role="region"
+         aria-label="Challenge tips">
+
+      <button id="tips-dismiss"
+              class="tips-dismiss-btn"
+              aria-label="Dismiss tips">
+        ✕
+      </button>
+
+      <h3 class="controls-title">💡 A few ideas to get you started...</h3>
+
+      <ul id="tips-list"
+          class="tips-list"
+          aria-label="Creative suggestions">
+        <!-- Populated by JavaScript -->
+      </ul>
+
+      <p class="text-soft" style="font-size: 0.85rem; margin-top: 12px;">
+        These are just ideas. Your version might be completely different — and that's great!
+      </p>
+    </div>
+
+    <!-- Divider + Surprise Me button -->
+    <div class="challenges-divider">
+      <p class="text-soft">Or explore all challenges</p>
+      <button id="btn-surprise"
+              class="btn btn-secondary"
+              aria-label="Pick a random challenge for me">
+        🎲 Surprise Me!
+      </button>
+    </div>
+
+    <!-- All Challenges Grid -->
+    <section aria-label="All available challenges">
+      <div id="all-challenges"
+           class="challenges-grid stagger-children"
+           role="list">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/pixel.js"></script>
+  <script src="js/challenges.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      initPixel('challenges');
+
+      /* Render today's featured challenge */
+      const todaysChallenge = getTodaysChallenge();
+      renderFeaturedChallenge(todaysChallenge);
+
+      /* Render tips */
+      renderTips(todaysChallenge);
+
+      /* Render all challenges grid */
+      renderAllChallenges();
+
+      /* Update Pixel's message */
+      setPixelMessage(
+        `Today's mission: "${todaysChallenge.title}". ` +
+        `There's no wrong answer! 🌟`
+      );
+
+      /* Surprise Me button */
+      document.getElementById('btn-surprise')
+        ?.addEventListener('click', () => {
+          const all    = getAllChallenges();
+          const random = all[Math.floor(Math.random() * all.length)];
+          window.location.href = `editor.html?challenge=${random.id}`;
+        });
+    });
+
+    function renderFeaturedChallenge(challenge) {
+      const el = document.getElementById('todays-challenge');
+      el.innerHTML = `
+        <div class="challenge-featured-inner">
+          <span class="challenge-emoji-large" aria-hidden="true">
+            ${challenge.emoji}
+          </span>
+          <div class="challenge-featured-content">
+            <h2 class="card-title">${challenge.title}</h2>
+            <p class="challenge-desc">${challenge.description}</p>
+            <a href="editor.html?challenge=${challenge.id}"
+               class="btn btn-coral btn-lg"
+               style="margin-top: 20px;"
+               aria-label="Start today's challenge: ${challenge.title}">
+              Start Making! 🎨
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTips(challenge) {
+      if (!challenge.tips || challenge.tips.length === 0) return;
+
+      /* Check if tips were dismissed this session */
+      const dismissed = sessionStorage.getItem('rivora_tips_dismissed');
+      if (dismissed) return;
+
+      const tipsContainer = document.getElementById('challenge-tips');
+      const tipsList      = document.getElementById('tips-list');
+
+      challenge.tips.forEach(tip => {
+        const li       = document.createElement('li');
+        li.textContent = tip;
+        tipsList.appendChild(li);
+      });
+
+      tipsContainer.style.display = 'block';
+
+      /* Dismiss button */
+      document.getElementById('tips-dismiss')
+        ?.addEventListener('click', () => {
+          tipsContainer.style.opacity    = '0';
+          tipsContainer.style.transition = 'opacity 200ms ease';
+          setTimeout(() => {
+            tipsContainer.style.display = 'none';
+          }, 200);
+          sessionStorage.setItem('rivora_tips_dismissed', '1');
+        });
+    }
+
+    function renderAllChallenges() {
+      const container = document.getElementById('all-challenges');
+      const all       = getAllChallenges();
+
+      all.forEach(challenge => {
+        const card = renderChallengeCard(challenge, false);
+        card.setAttribute('role', 'listitem');
+        container.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>

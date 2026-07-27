@@ -1,0 +1,140 @@
+/* ============================================================
+   challenges.css — VERSION 2
+   Added: tips dismiss button, surprise me divider
+   ============================================================ */
+
+/* Featured challenge card */
+.challenge-featured {
+  padding: var(--space-xl);
+  background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%);
+  border: 2px solid var(--color-sand-warm);
+}
+
+.challenge-featured-inner {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+@media (max-width: 500px) {
+  .challenge-featured-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.challenge-emoji-large {
+  font-size: 5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.challenge-featured-content {
+  flex: 1;
+}
+
+.challenge-desc {
+  color: var(--color-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-top: var(--space-sm);
+}
+
+.challenge-featured-label {
+  margin-bottom: var(--space-md);
+}
+
+/* All challenges grid */
+.challenges-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 600px) {
+  .challenges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.challenge-card {
+  text-align: center;
+  cursor: default;
+}
+
+.challenge-card .challenge-emoji {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+/* Tips section */
+.challenge-tips {
+  position: relative;  /* needed for dismiss button positioning */
+}
+
+/* Dismiss button for tips */
+.tips-dismiss-btn {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text-soft);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  /* Minimum tap target */
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tips-dismiss-btn:hover {
+  color: var(--color-text);
+  background-color: var(--color-sky);
+}
+
+/* Tips list items */
+.tips-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tips-list li {
+  padding: var(--space-sm) var(--space-md);
+  padding-left: calc(var(--space-lg) + 4px);
+  background-color: var(--color-sky);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  position: relative;
+}
+
+.tips-list li::before {
+  content: '🌊';
+  position: absolute;
+  left: 8px;
+}
+
+/* Divider between featured and all challenges */
+.challenges-divider {
+  margin: 40px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.challenges-divider .text-soft {
+  font-size: 0.95rem;
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Rivora — Your Creative Island",
+  "short_name": "Rivora",
+  "description": "A creative island for children. Explore, learn, and make something amazing.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#d6eaf8",
+  "theme_color": "#5dade2",
+  "orientation": "any",
+  "categories": ["education", "kids"],
+  "lang": "en"
+}

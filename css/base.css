@@ -1,0 +1,157 @@
+/* ============================================================
+   base.css — Rivora Design Foundation
+   
+   This file defines:
+   - CSS custom properties (variables) for colors and spacing
+   - A clean reset so browsers behave consistently
+   - Typography (fonts and text sizes)
+   
+   Think of this as the "rules" every other file follows.
+   ============================================================ */
+
+/* ---------- Google Fonts Import ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+
+/* ---------- CSS Custom Properties (Variables) ---------- */
+/* 
+   Variables let us reuse values throughout the project.
+   Changing --color-ocean here changes it EVERYWHERE.
+*/
+:root {
+  /* Colors — island palette */
+  --color-sky:         #d6eaf8;   /* soft sky blue background */
+  --color-ocean:       #5dade2;   /* medium ocean blue */
+  --color-ocean-deep:  #2e86c1;   /* deeper blue for hover states */
+  --color-sand:        #fef9e7;   /* warm sand white */
+  --color-sand-warm:   #fdebd0;   /* slightly warmer sand */
+  --color-coral:       #f1948a;   /* coral accent */
+  --color-coral-hover: #e74c3c;   /* slightly deeper coral */
+  --color-white:       #ffffff;
+  --color-text:        #2c3e50;   /* dark navy for readable text */
+  --color-text-soft:   #5d6d7e;   /* softer grey for secondary text */
+  --color-success:     #82e0aa;   /* soft green for positive feedback */
+
+  /* Spacing — consistent padding and margins */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+
+  /* Border radius — rounded, friendly corners */
+  --radius-sm:  8px;
+  --radius-md:  16px;
+  --radius-lg:  24px;
+  --radius-xl:  40px;
+  --radius-full: 9999px;
+
+  /* Shadows — soft, not harsh */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  /* Typography */
+  --font-body:    'Nunito', sans-serif;
+  --font-display: 'Fredoka One', cursive;
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
+}
+
+/* ---------- Reset ---------- */
+/*
+   Browsers apply their own default styles.
+   This reset clears those defaults so WE control everything.
+*/
+*, *::before, *::after {
+  box-sizing: border-box; /* padding doesn't add to element width */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;        /* 1rem = 16px */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-sky);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased; /* smoother text on Mac */
+}
+
+/* ---------- Typography Scale ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3rem); }     /* scales with screen */
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
+
+p {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--color-text-soft);
+}
+
+/* ---------- Links ---------- */
+a {
+  color: var(--color-ocean);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-ocean-deep);
+}
+
+/* ---------- Images ---------- */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ---------- Focus Styles (Accessibility) ---------- */
+/*
+   When a user navigates with a keyboard, this shows
+   which element is currently focused. Very important
+   for accessibility.
+*/
+:focus-visible {
+  outline: 3px solid var(--color-ocean);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Utility Classes ---------- */
+.sr-only {
+  /* Visible to screen readers, invisible on screen */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center { text-align: center; }
+.text-soft   { color: var(--color-text-soft); }
+
+.container {
+  /* Centers content and limits maximum width */
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
