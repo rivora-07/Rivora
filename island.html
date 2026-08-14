@@ -3,117 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>The Island — Rivora</title>
-  <meta name="description" content="Explore Rivora's creative island. Learn, create, and save your creations." />
-
-  <!-- Preconnect for faster fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
-
-  <!-- PWA manifest -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5dade2" />
-
-  <!-- Preload critical CSS -->
-  <link rel="preload" href="css/base.css" as="style" />
-  <link rel="preload" href="css/components.css" as="style" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/island.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Great+Vibes&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/island.css" />
 </head>
 <body>
-
-  <!-- Navigation bar -->
   <nav class="nav-bar" role="navigation" aria-label="Main navigation">
-    <a href="index.html" class="nav-logo" aria-label="Go back to Rivora home">
-      🏝 Rivora
+    <a href="./index.html" class="nav-logo" aria-label="Home">
+      <span class="logo-island">🌊</span><span class="logo-text">Rivora</span>
     </a>
   </nav>
-
   <main class="island-page">
+    <span class="island-deco island-wave-left" aria-hidden="true">🌊</span>
+    <span class="island-deco island-wave-right" aria-hidden="true">🌊</span>
+    <span class="island-deco island-shell" aria-hidden="true">🐚</span>
+    <span class="island-deco island-starfish" aria-hidden="true">⭐</span>
 
-    <!-- Pixel greeting -->
     <div class="container">
       <div class="pixel-section animate-fade-in">
-        <div class="pixel-avatar animate-float"
-             role="img"
-             aria-label="Pixel mascot">
-          🐦
-        </div>
-        <div class="pixel-bubble"
-             aria-live="polite"
-             aria-atomic="true">
+        <div class="pixel-avatar animate-float" role="img" aria-label="Pixel">🐰</div>
+        <div class="pixel-bubble" aria-live="polite" aria-atomic="true">
           <p id="pixel-bubble-text">Where do you want to go today?</p>
         </div>
       </div>
     </div>
 
-    <!-- Page title -->
     <div class="island-title animate-fade-in">
-      <h1>Welcome to the Island 🌴</h1>
+      <h1>Welcome to the Island 🌊</h1>
       <p>Pick a place to explore</p>
     </div>
 
-    <!-- Three Location Cards -->
     <div class="island-locations stagger-children" role="list">
 
-      <!-- Learn -->
-      <a href="learn.html"
-         class="location-card learn animate-fade-in"
-         role="listitem"
-         aria-label="Go to Learn — creative editing lessons">
-        <span class="location-icon" aria-hidden="true">🏄</span>
+      <a href="./learn.html" class="location-card learn animate-wobble" role="listitem" aria-label="Learn">
+        <span class="location-icon" aria-hidden="true">📚</span>
         <h2 class="location-title">Learn</h2>
-        <p class="location-desc">
-          Short lessons that teach you one cool trick at a time.
-          Each one takes less than a minute!
-        </p>
+        <p class="location-desc">Short lessons that teach you one cool trick at a time!</p>
       </a>
 
-      <!-- Today's Challenge -->
-      <a href="challenges.html"
-         class="location-card challenge animate-fade-in"
-         role="listitem"
-         aria-label="Go to Today's Challenge — creative missions">
+      <a href="./challenges.html" class="location-card challenge animate-wobble" role="listitem" aria-label="Challenges">
         <span class="location-icon" aria-hidden="true">🎒</span>
         <h2 class="location-title">Today's Challenge</h2>
-        <p class="location-desc">
-          Pixel has a creative mission for you.
-          There's no wrong answer — just your imagination!
-        </p>
+        <p class="location-desc">Pixel has a creative mission for you. No wrong answers!</p>
       </a>
 
-      <!-- My Creations -->
-      <a href="creations.html"
-         class="location-card creations animate-fade-in"
-         role="listitem"
-         aria-label="Go to My Creations — see everything you've made">
-        <span class="location-icon" aria-hidden="true">🏖</span>
+      <a href="./creations.html" class="location-card creations animate-wobble" role="listitem" aria-label="Creations">
+        <span class="location-icon" aria-hidden="true">🎨</span>
         <h2 class="location-title">My Creations</h2>
-        <p class="location-desc">
-          Everything you've ever made on this island.
-          Your personal gallery!
-        </p>
+        <p class="location-desc">Everything you've made. Your personal gallery!</p>
       </a>
 
     </div>
 
-    <!-- Decorative wave -->
+    <!-- FREE CREATE BUTTON -->
+    <div class="free-create-section animate-slide-up" style="text-align:center; margin-top:var(--space-xl);">
+      <p class="text-soft" style="margin-bottom:10px; font-weight:600;">Or just start creating with your own photo!</p>
+      <a href="./editor.html" class="btn btn-magic btn-lg" aria-label="Open editor with your own photo">
+        ✨ Free Create
+      </a>
+    </div>
+
     <div class="island-wave" aria-hidden="true"></div>
 
+    <footer class="rivora-footer">
+      <p class="footer-love">Built with ❤️ by Ritvija</p>
+      <p class="footer-founded">Founded on 7 June 2026</p>
+      <p class="footer-tagline">Every kid deserves great tools</p>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy Promise</a>
+        <a href="./feedback.html">Send Feedback</a>
+      </div>
+    </footer>
   </main>
-
-  <script src="js/pixel.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initPixel('island');
-    });
-  </script>
-
+  <script src="./js/pixel.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { initPixel('island'); });</script>
 </body>
 </html>

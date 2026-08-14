@@ -3,104 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Rivora — Your Creative Island</title>
-  <meta name="description" content="Rivora is a creative island for children. Explore, learn, and make something amazing." />
+  <meta name="description" content="Rivora is a creative island for children." />
   <meta name="referrer" content="no-referrer" />
-
-  <!-- Preconnect: start connecting to Google Fonts servers early -->
-  <!-- This saves loading time -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- Load the fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
-
-  <!-- PWA manifest: makes Rivora installable like an app -->
-  <link rel="manifest" href="/manifest.json" />
-
-  <!-- Colors the browser bar on mobile -->
-  <meta name="theme-color" content="#5dade2" />
-
-  <!-- Preload critical CSS so it loads faster -->
-  <link rel="preload" href="css/base.css" as="style" />
-  <link rel="preload" href="css/components.css" as="style" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/landing.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Great+Vibes&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="preload" href="./css/base.css" as="style" />
+  <link rel="preload" href="./css/components.css" as="style" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/landing.css" />
 </head>
 <body>
-
   <main class="landing-page">
-
-    <!-- Wave decoration at top -->
-    <div class="landing-waves" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="rgba(93,173,226,0.15)" />
-      </svg>
+    <div class="landing-clouds" aria-hidden="true">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
     </div>
+    <div class="landing-deco landing-deco-bubble-1" aria-hidden="true"></div>
+    <div class="landing-deco landing-deco-bubble-2" aria-hidden="true"></div>
+    <div class="landing-deco landing-deco-bubble-3" aria-hidden="true"></div>
+    <span class="landing-deco landing-deco-shell-1" aria-hidden="true">🐚</span>
+    <span class="landing-deco landing-deco-shell-2" aria-hidden="true">🐚</span>
+    <span class="landing-deco landing-deco-star" aria-hidden="true">⭐</span>
 
-    <!-- Hero Content -->
     <div class="landing-content container animate-fade-in">
-
-      <!-- Logo -->
       <div class="landing-logo" aria-label="Rivora logo">
-        <span class="logo-icon" aria-hidden="true">🏝</span>
+        <span class="logo-icon" aria-hidden="true">🌊</span>
         <span class="logo-text">Rivora</span>
       </div>
-
-      <!-- Pixel Mascot + Welcome Speech -->
       <div class="pixel-section landing-pixel">
-        <div class="pixel-avatar animate-float"
-             role="img"
-             aria-label="Pixel, your friendly guide">
-          🐦
-        </div>
-        <div class="pixel-bubble"
-             aria-live="polite"
-             aria-atomic="true">
-          <p id="pixel-bubble-text">Hey there! I'm Pixel. Ready to make something?</p>
+        <div class="pixel-avatar animate-float" role="img" aria-label="Pixel the rabbit">🐰</div>
+        <div class="pixel-bubble" aria-live="polite" aria-atomic="true">
+          <p id="pixel-bubble-text">Hey there! I'm Pixel. Ready to make something amazing?</p>
         </div>
       </div>
-
-      <!-- Main heading -->
-      <h1 class="landing-heading">
-        Your creative island<br />is waiting. 🌊
-      </h1>
-
-      <!-- Sub-heading -->
-      <p class="landing-sub">
-        No login. No pressure. Just you and your imagination.
-      </p>
-
-      <!-- Main CTA button -->
-      <a href="island.html"
-         class="btn btn-primary btn-lg animate-pulse-attention"
-         aria-label="Explore the island and start creating">
-        Explore the Island 🏄
-      </a>
-
+      <h1 class="landing-heading">Your creative island<br /><span class="heading-highlight">is waiting.</span> 🌊</h1>
+      <p class="landing-sub">No login. No pressure. Just you and your imagination.</p>
+      <div class="landing-cta">
+        <a href="./island.html" class="btn btn-primary btn-lg animate-pulse-attention" aria-label="Explore the island">Explore the Island 🌊</a>
+      </div>
     </div>
-
-    <!-- Bottom decorative island illustration -->
     <div class="landing-island-art" aria-hidden="true">
-      <div class="island-art-inner">
-        🌴 🏖 🐚 🌊 🦀 🌴
+      <div class="island-scene">
+        <span class="star">⭐</span><span class="wave">🌊</span><span class="shell">🐚</span><span class="wave">🌊</span><span class="shell">🦀</span><span class="wave">🌊</span><span class="star">⭐</span>
       </div>
     </div>
-
+    <footer class="rivora-footer">
+      <p class="footer-love">Built with ❤️ by Ritvija</p>
+      <p class="footer-founded">Founded on 7 June 2026</p>
+      <p class="footer-tagline">Every kid deserves great tools</p>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy Promise</a>
+        <a href="./feedback.html">Send Feedback</a>
+      </div>
+    </footer>
   </main>
-
-  <!-- Scripts -->
-  <script src="js/pixel.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initPixel('landing');
-    });
-  </script>
-
+  <script src="./js/pixel.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { initPixel('landing'); });</script>
 </body>
 </html>

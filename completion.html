@@ -3,264 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>You made something! — Rivora</title>
-  <meta name="description" content="You finished your creation! Pixel is proud of you." />
-
-  <!-- Preconnect for faster fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
-
-  <!-- PWA manifest -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5dade2" />
-
-  <!-- Preload critical CSS -->
-  <link rel="preload" href="css/base.css" as="style" />
-  <link rel="preload" href="css/components.css" as="style" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/completion.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Great+Vibes&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/completion.css" />
 </head>
 <body>
-
-  <!-- Navigation -->
-  <nav class="nav-bar" role="navigation" aria-label="Main navigation">
-    <a href="island.html"
-       class="nav-logo"
-       aria-label="Return to Rivora island">
-      🏝 Rivora
-    </a>
+  <nav class="nav-bar" role="navigation">
+    <a href="./island.html" class="nav-logo"><span class="logo-island">🌊</span><span class="logo-text">Rivora</span></a>
   </nav>
-
-  <!--
-    CONFETTI
-    Pure CSS animation. Hidden from screen readers.
-    Automatically disabled for users who prefer reduced motion
-    (handled in completion.css with prefers-reduced-motion).
-  -->
   <div class="confetti-container" aria-hidden="true">
-    <span class="confetti c1">🌊</span>
-    <span class="confetti c2">🐚</span>
-    <span class="confetti c3">⭐</span>
-    <span class="confetti c4">🌴</span>
-    <span class="confetti c5">✨</span>
-    <span class="confetti c6">🐠</span>
-    <span class="confetti c7">🌸</span>
+    <span class="confetti c1">🌊</span><span class="confetti c2">🐚</span><span class="confetti c3">⭐</span><span class="confetti c4">💜</span><span class="confetti c5">✨</span><span class="confetti c6">🐰</span><span class="confetti c7">💖</span>
   </div>
-
-  <main class="completion-page container" aria-label="Creation complete">
-
-    <!-- ============================================================
-         PIXEL CELEBRATION
-         Pixel gives a calm, warm message.
-         No scores. No stars. No pressure.
-         ============================================================ -->
-    <section class="pixel-section completion-pixel animate-fade-in"
-             aria-label="Pixel's message">
-
-      <div class="pixel-avatar pixel-avatar--large animate-float"
-           role="img"
-           aria-label="Pixel celebrating your creation">
-        🐦
-      </div>
-
-      <div class="pixel-bubble pixel-bubble--celebration"
-           aria-live="polite"
-           aria-atomic="true">
-        <p id="pixel-bubble-text">I like your version. 🌟</p>
-      </div>
-
+  <main class="completion-page container">
+    <section class="pixel-section completion-pixel animate-fade-in">
+      <div class="pixel-avatar pixel-avatar--large animate-float" role="img">🐰</div>
+      <div class="pixel-bubble pixel-bubble--celebration" aria-live="polite" aria-atomic="true"><p id="pixel-bubble-text">I like your version. 🌟</p></div>
     </section>
-
-    <!-- ============================================================
-         CREATION TITLE
-         Updated by JavaScript using the ?name= URL parameter.
-         ============================================================ -->
-    <section class="completion-name animate-fade-in"
-             aria-label="Your creation">
-
-      <h1 id="creation-title">You made something! ✨</h1>
-      <p class="text-soft" style="margin-top: 8px;">
-        It's saved in your island gallery.
-      </p>
-
+    <section class="completion-name animate-fade-in"><h1 id="creation-title">You made something! ✨</h1><p class="text-soft" style="margin-top:6px;">It's saved in your gallery.</p></section>
+    <section class="reflection-card card animate-slide-up">
+      <label class="reflection-question" for="reflection-input" id="reflection-label">What surprised you while making this?</label>
+      <textarea id="reflection-input" class="reflection-textarea" placeholder="Type anything... or just skip." rows="3" aria-labelledby="reflection-label" aria-describedby="reflection-hint"></textarea>
+      <p id="reflection-hint" class="text-soft" style="font-size:0.78rem; margin-top:6px;">This is just for you. Nobody else sees it.</p>
     </section>
-
-    <!-- ============================================================
-         REFLECTION QUESTION
-         Always optional. Always skippable. Never judged.
-         ============================================================ -->
-    <section class="reflection-card card animate-slide-up"
-             aria-label="Optional reflection question">
-
-      <!--
-        The 'for' on the label matches the 'id' on the textarea.
-        This connects them so screen readers say the label
-        when the textarea is focused.
-      -->
-      <label class="reflection-question"
-             for="reflection-input"
-             id="reflection-label">
-        What surprised you while making this?
-      </label>
-
-      <textarea
-        id="reflection-input"
-        class="reflection-textarea"
-        placeholder="Type anything here... or just skip."
-        rows="3"
-        aria-labelledby="reflection-label"
-        aria-describedby="reflection-hint"
-      ></textarea>
-
-      <p id="reflection-hint"
-         class="text-soft"
-         style="font-size: 0.8rem; margin-top: 8px;">
-        This is just for you. Nobody else sees it.
-      </p>
-
+    <section class="completion-actions animate-slide-up">
+      <button class="btn btn-ghost" id="btn-skip-reflection">Skip ↗</button>
+      <button class="btn btn-secondary" id="btn-download" style="display:none;">Download 📥</button>
+      <a href="./challenges.html" class="btn btn-primary btn-lg">Make Another! 🎨</a>
+      <a href="./creations.html" class="btn btn-secondary">My Gallery 🎨</a>
     </section>
-
-    <!-- ============================================================
-         ACTION BUTTONS
-         ============================================================ -->
-    <section class="completion-actions animate-slide-up"
-             aria-label="Next steps">
-
-      <!-- Skip: always visible, never hidden -->
-      <button class="btn btn-ghost"
-              id="btn-skip-reflection"
-              aria-label="Skip the reflection and go to challenges">
-        Skip ↗
-      </button>
-
-      <!-- Download: shown by JavaScript only if a creation exists -->
-      <button class="btn btn-secondary"
-              id="btn-download"
-              aria-label="Download your creation as an image file"
-              style="display: none;">
-        Download 📥
-      </button>
-
-      <!-- Make another: primary action -->
-      <a href="challenges.html"
-         class="btn btn-primary btn-lg"
-         aria-label="Go back to challenges and make another creation">
-        Make Another! 🎨
-      </a>
-
-      <!-- Gallery: secondary action -->
-      <a href="creations.html"
-         class="btn btn-secondary"
-         aria-label="View all your saved creations">
-        See My Gallery 🏖
-      </a>
-
-    </section>
-
+    <footer class="rivora-footer">
+      <p class="footer-love">Built with ❤️ by Ritvija</p>
+      <p class="footer-founded">Founded on 7 June 2026</p>
+      <p class="footer-tagline">Every kid deserves great tools</p>
+      <div class="footer-links"><a href="./privacy.html">Privacy Promise</a><a href="./feedback.html">Send Feedback</a>
   </main>
-
-  <!-- Toast notification -->
-  <div id="toast"
-       class="toast"
-       role="status"
-       aria-live="polite"
-       aria-atomic="true">
-  </div>
-
-  <!-- Scripts -->
-  <script src="js/storage.js"></script>
-  <script src="js/pixel.js"></script>
-
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./js/storage.js"></script>
+  <script src="./js/pixel.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-
-      /* ---- Read the creation name from the URL ---- */
-      /*
-        When editor.js redirects here, it adds ?name=My+Creation
-        to the URL. We read that here and show it to the child.
-      */
-      const params       = new URLSearchParams(window.location.search);
-      const creationName = params.get('name') || 'Your Creation';
-
-      /* Update the page heading */
-      document.getElementById('creation-title').textContent =
-        `"${creationName}" is done! ✨`;
-
-      /* Update the browser tab title */
-      document.title = `${creationName} — Rivora`;
-
-      /* ---- Initialize Pixel ---- */
+      const n = new URLSearchParams(window.location.search).get('name') || 'Your Creation';
+      document.getElementById('creation-title').textContent = `"${n}" is done! ✨`;
+      document.title = `${n} — Rivora`;
       initPixel('completion');
-
-      /*
-        After 2 seconds, update Pixel to say something
-        personal with the child's creation name.
-      */
-      setTimeout(() => {
-        setPixelMessage(
-          `"${creationName}" — I like your version. It's uniquely yours. 🌟`
-        );
-      }, 2000);
-
-      /* ---- Download button ---- */
-      /*
-        We look for the most recently saved creation
-        and offer it as a downloadable PNG file.
-      */
-      const allCreations = getAllCreations();
-
-      if (allCreations.length > 0) {
-        const latestCreation = allCreations[0];
-        const downloadBtn    = document.getElementById('btn-download');
-
-        /* Show the button now that we know a creation exists */
-        downloadBtn.style.display = 'inline-flex';
-
-        downloadBtn.addEventListener('click', () => {
-          /* Create a temporary invisible link and click it */
-          const link    = document.createElement('a');
-          link.href     = latestCreation.imageData;
-
-          /*
-            Make a safe filename:
-            "My Flying Cat!" becomes "My_Flying_Cat_"
-          */
-          const safeName  = creationName.replace(/[^a-z0-9]/gi, '_');
-          link.download   = `${safeName}_rivora.png`;
-
-          link.click();
-
-          showToast('Downloading your creation! 📥');
-        });
-      }
-
-      /* ---- Skip button ---- */
-      document.getElementById('btn-skip-reflection')
-        ?.addEventListener('click', () => {
-          window.location.href = 'challenges.html';
-        });
-
-      /* ---- Enter key in textarea moves on ---- */
-      /*
-        Pressing Enter (without Shift) acts like clicking Skip.
-        Shift+Enter still adds a new line normally.
-      */
-      document.getElementById('reflection-input')
-        ?.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            window.location.href = 'challenges.html';
-          }
-        });
-
+      setTimeout(() => { setPixelMessage(`"${n}" — I like your version. 🌟`); }, 2000);
+      const a = getAllCreations();
+      if (a.length > 0) { const l = a[0], b = document.getElementById('btn-download'); b.style.display = 'inline-flex'; b.addEventListener('click', () => { const x = document.createElement('a'); x.href = l.imageData; x.download = `${n.replace(/[^a-z0-9]/gi,'_')}_rivora.png`; x.click(); showToast('Downloading! 📥'); }); }
+      document.getElementById('btn-skip-reflection')?.addEventListener('click', () => { window.location.href = './challenges.html'; });
+      document.getElementById('reflection-input')?.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.location.href = './challenges.html'; } });
     });
   </script>
-
 </body>
 </html>

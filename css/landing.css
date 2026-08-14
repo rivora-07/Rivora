@@ -1,37 +1,21 @@
-/* ============================================================
-   landing.css — Landing Page Specific Styles
-   
-   The landing page should feel:
-   - Open and airy
-   - Welcoming
-   - Simple — one message, one button
-   ============================================================ */
+/* landing.css — Rivora V3 Final Compact */
 
-/* ---------- Full-height layout ---------- */
 .landing-page {
   min-height: 100vh;
-  background: linear-gradient(160deg, #d6eaf8 0%, #aed6f1 50%, #fef9e7 100%);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg, #eef4ff 0%, #dbe8ff 15%, #d0d4ff 30%, #c9a3ff 45%, #e0b0ff 55%, #ffb3cc 70%, #ffe8f0 85%, #fef8f0 100%);
+  background-attachment: fixed;
 }
 
-/* ---------- Waves decoration ---------- */
-.landing-waves {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  pointer-events: none;
-}
+.landing-clouds { position: absolute; top: 0; left: 0; width: 100%; height: 160px; pointer-events: none; z-index: 1; }
+.cloud { position: absolute; background: radial-gradient(ellipse, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; }
+.cloud-1 { width: 250px; height: 60px; top: 15px; left: 5%; animation: floatBubble 10s ease-in-out infinite; }
+.cloud-2 { width: 180px; height: 50px; top: 40px; right: 10%; animation: floatBubble 8s ease-in-out 2s infinite; }
+.cloud-3 { width: 200px; height: 55px; top: 25px; left: 40%; animation: floatBubble 12s ease-in-out 1s infinite; opacity: 0.5; }
 
-.landing-waves svg {
-  width: 100%;
-  height: auto;
-}
-
-/* ---------- Main content area ---------- */
 .landing-content {
   flex: 1;
   display: flex;
@@ -39,57 +23,78 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-xxl) var(--space-md);
+  padding: var(--space-xxl) var(--space-md) var(--space-xl);
   gap: var(--space-lg);
+  position: relative;
+  z-index: 10;
 }
 
-/* ---------- Logo ---------- */
-.landing-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
-}
-
-.logo-icon {
-  font-size: 2rem;
-}
-
+.landing-logo { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs); }
+.logo-icon { font-size: 2.2rem; animation: sway 4s ease-in-out infinite; }
 .logo-text {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--color-ocean-deep);
+  font-family: var(--font-logo);
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-blue), var(--color-purple-deep) 40%, var(--color-pink-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(139,92,246,0.25));
 }
 
-/* ---------- Pixel section on landing ---------- */
-.landing-pixel {
-  max-width: 480px;
-  width: 100%;
-}
+.landing-pixel { max-width: 480px; width: 100%; }
+.landing-pixel .pixel-avatar { width: 80px; height: 80px; font-size: 2.6rem; }
 
-/* ---------- Heading ---------- */
 .landing-heading {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
   color: var(--color-text);
   line-height: 1.2;
-  max-width: 600px;
+  max-width: 520px;
+}
+.landing-heading .heading-highlight {
+  background: linear-gradient(135deg, var(--color-purple-deep), var(--color-pink-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ---------- Sub-heading ---------- */
-.landing-sub {
-  font-size: clamp(1rem, 2.5vw, 1.15rem);
-  color: var(--color-text-soft);
-  max-width: 420px;
+.landing-sub { font-size: clamp(0.9rem, 2.2vw, 1.1rem); color: var(--color-text-warm); max-width: 400px; font-weight: 600; }
+
+.landing-cta { position: relative; }
+.landing-cta::after {
+  content: '';
+  position: absolute; inset: -5px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-blue), var(--color-purple-deep));
+  opacity: 0.25; z-index: -1;
+  filter: blur(10px);
+  animation: gentlePulse 3s ease-in-out infinite;
 }
 
-/* ---------- Island art at bottom ---------- */
 .landing-island-art {
-  padding: var(--space-lg);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
   text-align: center;
+  position: relative;
+  z-index: 10;
 }
+.island-scene {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: 6px; font-size: clamp(1.5rem, 4vw, 2.2rem); letter-spacing: 4px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+}
+.island-scene .wave { animation: float 2s ease-in-out infinite; }
+.island-scene .shell { animation: wobble 5s ease-in-out infinite; }
+.island-scene .star { animation: sway 3s ease-in-out infinite; transform-origin: bottom center; }
 
-.island-art-inner {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  letter-spacing: 8px;
-  opacity: 0.7;
+.landing-deco { position: absolute; pointer-events: none; z-index: 5; }
+.landing-deco-bubble-1 { width: 32px; height: 32px; top: 28%; left: 8%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), rgba(139,92,246,0.08)); animation: floatBubble 7s ease-in-out infinite; }
+.landing-deco-bubble-2 { width: 20px; height: 20px; top: 42%; right: 12%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), rgba(255,179,204,0.1)); animation: floatBubble 5s ease-in-out 1s infinite; }
+.landing-deco-bubble-3 { width: 44px; height: 44px; bottom: 32%; left: 14%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), rgba(139,92,246,0.06)); animation: floatBubble 9s ease-in-out 0.5s infinite; }
+.landing-deco-shell-1 { top: 24%; right: 6%; font-size: 1.5rem; opacity: 0.35; animation: floatShell 8s ease-in-out infinite; }
+.landing-deco-shell-2 { bottom: 28%; left: 5%; font-size: 1.3rem; opacity: 0.3; animation: floatShell 10s ease-in-out 2s infinite; }
+.landing-deco-star { top: 38%; left: 3%; font-size: 1.6rem; opacity: 0.25; animation: rotateStarfish 15s linear infinite; }
+
+@media (max-width: 600px) {
+  .landing-content { padding: var(--space-xl) var(--space-md); }
+  .landing-pixel .pixel-avatar { width: 64px; height: 64px; font-size: 2rem; }
 }

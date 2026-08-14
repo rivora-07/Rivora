@@ -1,157 +1,167 @@
 /* ============================================================
-   base.css — Rivora Design Foundation
-   
-   This file defines:
-   - CSS custom properties (variables) for colors and spacing
-   - A clean reset so browsers behave consistently
-   - Typography (fonts and text sizes)
-   
-   Think of this as the "rules" every other file follows.
+   base.css — Rivora V3 Final
+   Compact spacing, blue/pink/purple palette
    ============================================================ */
 
-/* ---------- Google Fonts Import ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
-
-/* ---------- CSS Custom Properties (Variables) ---------- */
-/* 
-   Variables let us reuse values throughout the project.
-   Changing --color-ocean here changes it EVERYWHERE.
-*/
 :root {
-  /* Colors — island palette */
-  --color-sky:         #d6eaf8;   /* soft sky blue background */
-  --color-ocean:       #5dade2;   /* medium ocean blue */
-  --color-ocean-deep:  #2e86c1;   /* deeper blue for hover states */
-  --color-sand:        #fef9e7;   /* warm sand white */
-  --color-sand-warm:   #fdebd0;   /* slightly warmer sand */
-  --color-coral:       #f1948a;   /* coral accent */
-  --color-coral-hover: #e74c3c;   /* slightly deeper coral */
-  --color-white:       #ffffff;
-  --color-text:        #2c3e50;   /* dark navy for readable text */
-  --color-text-soft:   #5d6d7e;   /* softer grey for secondary text */
-  --color-success:     #82e0aa;   /* soft green for positive feedback */
+  /* Blues */
+  --color-sky-light:    #eef4ff;
+  --color-sky:          #dbe8ff;
+  --color-sky-mid:      #b8d4ff;
+  --color-blue:         #6ba3ff;
+  --color-blue-deep:    #4a7fff;
+  --color-blue-darker:  #3366e0;
 
-  /* Spacing — consistent padding and margins */
-  --space-xs:  4px;
-  --space-sm:  8px;
-  --space-md:  16px;
-  --space-lg:  24px;
-  --space-xl:  40px;
-  --space-xxl: 64px;
+  /* Pinks */
+  --color-pink-light:   #ffe8f0;
+  --color-pink:         #ffb3cc;
+  --color-pink-mid:     #ff85b1;
+  --color-pink-deep:    #ff5c94;
+  --color-pink-darker:  #e04880;
 
-  /* Border radius — rounded, friendly corners */
-  --radius-sm:  8px;
-  --radius-md:  16px;
-  --radius-lg:  24px;
-  --radius-xl:  40px;
+  /* Purples */
+  --color-purple-light: #f0e6ff;
+  --color-purple:       #c9a3ff;
+  --color-purple-mid:   #a87aff;
+  --color-purple-deep:  #8b5cf6;
+  --color-purple-darker:#7340d9;
+
+  /* Warm neutrals */
+  --color-cream:        #fefcf9;
+  --color-sand-light:   #fef8f0;
+  --color-sand:         #fdf0e0;
+  --color-sand-warm:    #fce5cc;
+
+  /* Accents */
+  --color-seafoam:      #80d4c8;
+  --color-mint:         #a8e6cf;
+  --color-coral:        #ff8a80;
+  --color-starfish:     #f48fb1;
+
+  /* Neutrals */
+  --color-white:        #ffffff;
+  --color-text:         #2d2d3f;
+  --color-text-warm:    #4a4a5a;
+  --color-text-soft:    #7f7f9a;
+
+  /* COMPACT spacing */
+  --space-xs:    3px;
+  --space-sm:    6px;
+  --space-md:    12px;
+  --space-lg:    18px;
+  --space-xl:    28px;
+  --space-xxl:   44px;
+  --space-huge:  64px;
+
+  /* Radius */
+  --radius-sm:   10px;
+  --radius-md:   16px;
+  --radius-lg:   22px;
+  --radius-xl:   32px;
   --radius-full: 9999px;
 
-  /* Shadows — soft, not harsh */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* Shadows */
+  --shadow-sm:     0 2px 10px rgba(107, 92, 231, 0.08);
+  --shadow-md:     0 4px 18px rgba(107, 92, 231, 0.12);
+  --shadow-lg:     0 8px 30px rgba(107, 92, 231, 0.15);
+  --shadow-pink:   0 4px 16px rgba(255, 92, 148, 0.15);
+  --shadow-purple: 0 4px 16px rgba(139, 92, 246, 0.15);
 
-  /* Typography */
-  --font-body:    'Nunito', sans-serif;
-  --font-display: 'Fredoka One', cursive;
+  /* Fonts */
+  --font-display: 'Unbounded', cursive;
+  --font-body:    'Geist', 'Inter', sans-serif;
+  --font-special: 'Great Vibes', cursive;
+  --font-logo:    'Unbounded', cursive;
 
   /* Transitions */
-  --transition-fast:   150ms ease;
-  --transition-normal: 250ms ease;
-  --transition-slow:   400ms ease;
+  --transition-fast:    150ms ease;
+  --transition-normal:  250ms ease;
+  --transition-slow:    400ms ease;
+  --transition-bounce:  350ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---------- Reset ---------- */
-/*
-   Browsers apply their own default styles.
-   This reset clears those defaults so WE control everything.
-*/
 *, *::before, *::after {
-  box-sizing: border-box; /* padding doesn't add to element width */
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html {
-  font-size: 16px;        /* 1rem = 16px */
+  font-size: 16px;
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  background-color: var(--color-sky);
-  line-height: 1.6;
+  background: linear-gradient(
+    180deg,
+    var(--color-sky-light) 0%,
+    var(--color-sky) 25%,
+    var(--color-purple-light) 50%,
+    var(--color-pink-light) 75%,
+    var(--color-sand-light) 100%
+  );
+  background-attachment: fixed;
+  line-height: 1.5;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased; /* smoother text on Mac */
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* ---------- Typography Scale ---------- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
+  font-weight: 700;
   line-height: 1.2;
   color: var(--color-text);
 }
 
-h1 { font-size: clamp(2rem, 5vw, 3rem); }     /* scales with screen */
-h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
-h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
+h1 { font-size: clamp(1.6rem, 5vw, 2.6rem); }
+h2 { font-size: clamp(1.3rem, 3.5vw, 1.8rem); }
+h3 { font-size: clamp(1rem, 2.5vw, 1.3rem); }
 
 p {
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-  color: var(--color-text-soft);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  color: var(--color-text-warm);
+  font-weight: 500;
 }
 
-/* ---------- Links ---------- */
+.text-special { font-family: var(--font-special); font-weight: 400; }
+
 a {
-  color: var(--color-ocean);
+  color: var(--color-purple-deep);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
+a:hover { color: var(--color-purple-darker); }
 
-a:hover {
-  color: var(--color-ocean-deep);
-}
+img { max-width: 100%; display: block; }
 
-/* ---------- Images ---------- */
-img {
-  max-width: 100%;
-  display: block;
-}
-
-/* ---------- Focus Styles (Accessibility) ---------- */
-/*
-   When a user navigates with a keyboard, this shows
-   which element is currently focused. Very important
-   for accessibility.
-*/
 :focus-visible {
-  outline: 3px solid var(--color-ocean);
+  outline: 3px solid var(--color-purple-deep);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
-/* ---------- Utility Classes ---------- */
 .sr-only {
-  /* Visible to screen readers, invisible on screen */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
 }
 
 .text-center { text-align: center; }
-.text-soft   { color: var(--color-text-soft); }
+.text-soft { color: var(--color-text-soft); font-weight: 500; }
 
 .container {
-  /* Centers content and limits maximum width */
   width: 100%;
-  max-width: 900px;
+  max-width: 880px;
   margin: 0 auto;
   padding: 0 var(--space-md);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-purple-deep) 50%, var(--color-pink-deep) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

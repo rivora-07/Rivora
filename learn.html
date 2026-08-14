@@ -3,263 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Learn — Rivora</title>
-  <meta name="description" content="Learn creative editing tricks with Rivora. Each lesson takes less than a minute!" />
-
-  <!-- Preconnect for faster fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
-
-  <!-- PWA manifest -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5dade2" />
-
-  <!-- Preload critical CSS -->
-  <link rel="preload" href="css/base.css" as="style" />
-  <link rel="preload" href="css/components.css" as="style" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/learn.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Great+Vibes&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/learn.css" />
 </head>
 <body>
-
-  <!-- Navigation -->
-  <nav class="nav-bar" role="navigation" aria-label="Main navigation">
-    <a href="island.html" class="nav-logo">🏝 Rivora</a>
-    <a href="island.html"
-       class="btn btn-ghost"
-       aria-label="Back to island">
-      ← Island
-    </a>
+  <nav class="nav-bar" role="navigation">
+    <a href="./island.html" class="nav-logo"><span class="logo-island">🌊</span><span class="logo-text">Rivora</span></a>
+    <a href="./island.html" class="btn btn-ghost">← Island</a>
   </nav>
-
   <main class="page-section container">
-
-    <!-- ============================================================
-         LESSON LIST VIEW
-         Shown when no specific lesson is selected
-         ============================================================ -->
     <section id="lesson-list-view">
-
-      <!-- Pixel -->
       <div class="pixel-section animate-fade-in">
-        <div class="pixel-avatar animate-float"
-             role="img"
-             aria-label="Pixel mascot">
-          🐦
-        </div>
-        <div class="pixel-bubble"
-             aria-live="polite"
-             aria-atomic="true">
-          <p id="pixel-bubble-text">Loading...</p>
-        </div>
+        <div class="pixel-avatar animate-float" role="img" aria-label="Pixel">🐰</div>
+        <div class="pixel-bubble" aria-live="polite" aria-atomic="true"><p id="pixel-bubble-text">Loading...</p></div>
       </div>
-
-      <!-- Page header -->
-      <div class="page-header">
-        <h1>🏄 Learn</h1>
-      </div>
-
-      <p style="margin-bottom: 24px;">
-        Pick a lesson. Each one teaches you one cool thing. Takes less than a minute!
-      </p>
-
-      <!-- Lesson cards injected here by JavaScript -->
-      <div id="lessons-container"
-           class="lessons-grid stagger-children"
-           role="list"
-           aria-label="Available lessons">
-      </div>
-
+      <div class="page-header"><h1>📚 Learn</h1></div>
+      <p style="margin-bottom:18px; font-weight:600;">Pick a lesson. Each one teaches you one cool thing!</p>
+      <div id="lessons-container" class="lessons-grid stagger-children" role="list"></div>
     </section>
-
-    <!-- ============================================================
-         SINGLE LESSON VIEW
-         Shown when ?lesson=lesson_id is in the URL
-         ============================================================ -->
-    <section id="lesson-detail-view" style="display: none;">
-
-      <!-- Back button -->
+    <section id="lesson-detail-view" style="display:none;">
       <div class="page-header">
-        <button class="btn btn-ghost"
-                id="back-to-lessons"
-                aria-label="Back to lesson list">
-          ← Back
-        </button>
-        <h1 id="lesson-detail-title">Lesson Title</h1>
+        <button class="btn btn-ghost" id="back-to-lessons">← Back</button>
+        <h1 id="lesson-detail-title">Lesson</h1>
       </div>
-
-      <!-- Pixel with lesson-specific message -->
       <div class="pixel-section animate-fade-in">
-        <div class="pixel-avatar animate-float"
-             role="img"
-             aria-label="Pixel mascot">
-          🐦
-        </div>
-        <div class="pixel-bubble"
-             aria-live="polite"
-             aria-atomic="true">
-          <p id="lesson-pixel-text">
-            Try moving the slider and watch what happens!
-          </p>
-        </div>
+        <div class="pixel-avatar animate-float" role="img" aria-label="Pixel">🐰</div>
+        <div class="pixel-bubble" aria-live="polite" aria-atomic="true"><p id="lesson-pixel-text">Try the slider!</p></div>
       </div>
-
-      <!-- Lesson explanation text -->
-      <div class="lesson-explanation card animate-fade-in"
-           id="lesson-content">
+      <div class="lesson-explanation card animate-fade-in" id="lesson-content"></div>
+      <div class="lesson-interactive card animate-slide-up" id="lesson-interactive" style="margin-top:18px;">
+        <div class="demo-image-container"><img id="demo-image" src="" alt="Demo" class="demo-image" loading="lazy" /></div>
+        <div id="lesson-controls" style="margin-top:14px;"></div>
       </div>
-
-      <!-- Interactive demo area -->
-      <div class="lesson-interactive card animate-slide-up"
-           id="lesson-interactive"
-           style="margin-top: 24px;">
-
-        <!-- Demo image with loading state -->
-        <div class="demo-image-container">
-          <img id="demo-image"
-               src=""
-               alt="Demo image for this lesson"
-               class="demo-image"
-               loading="lazy" />
-        </div>
-
-        <!-- Interactive controls injected by JavaScript -->
-        <div id="lesson-controls" style="margin-top: 16px;"></div>
-
+      <div style="text-align:center; margin-top:24px;">
+        <a href="./challenges.html" class="btn btn-primary btn-lg">Try it in a Challenge! 🎒</a>
       </div>
-
-      <!-- Link to try it in the editor -->
-      <div style="text-align: center; margin-top: 32px;">
-        <a href="challenges.html" class="btn btn-primary btn-lg">
-          Try it in a Challenge! 🎒
-        </a>
-      </div>
-
     </section>
-
   </main>
-
-  <!-- Scripts -->
-  <script src="js/pixel.js"></script>
-  <script src="js/learn.js"></script>
+  <script src="./js/pixel.js"></script>
+  <script src="./js/learn.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const params   = new URLSearchParams(window.location.search);
-      const lessonId = params.get('lesson');
-
-      if (lessonId) {
-        showLessonDetail(lessonId);
-      } else {
-        showLessonList();
-        initPixel('learn');
-      }
-
-      document.getElementById('back-to-lessons')
-        ?.addEventListener('click', () => {
-          window.location.href = 'learn.html';
-        });
+      const id = new URLSearchParams(window.location.search).get('lesson');
+      if (id) { showDetail(id); } else { showList(); initPixel('learn'); }
+      document.getElementById('back-to-lessons')?.addEventListener('click', () => { window.location.href = './learn.html'; });
     });
-
-    /* ---- Show all lessons as cards ---- */
-    function showLessonList() {
-      const container = document.getElementById('lessons-container');
-      const lessons   = getAllLessons();
-
-      lessons.forEach(lesson => {
-        const card = renderLessonCard(lesson);
-        container.appendChild(card);
-      });
-    }
-
-    /* ---- Show one lesson in detail ---- */
-    function showLessonDetail(lessonId) {
-      const lesson = getLessonById(lessonId);
-
-      if (!lesson) {
-        window.location.href = 'learn.html';
-        return;
-      }
-
-      document.getElementById('lesson-list-view').style.display   = 'none';
+    function showList() { const c = document.getElementById('lessons-container'); getAllLessons().forEach(l => c.appendChild(renderLessonCard(l))); }
+    function showDetail(id) {
+      const l = getLessonById(id); if (!l) { window.location.href = './learn.html'; return; }
+      document.getElementById('lesson-list-view').style.display = 'none';
       document.getElementById('lesson-detail-view').style.display = 'block';
-
-      document.getElementById('lesson-detail-title').textContent =
-        `${lesson.emoji} ${lesson.title}`;
-
-      document.getElementById('lesson-content').innerHTML = lesson.content;
-
-      document.title = `${lesson.title} — Learn — Rivora`;
-
-      const img = document.getElementById('demo-image');
-      img.src   = lesson.demoImage;
-      img.alt   = `Example image for the ${lesson.title} lesson`;
-
-      initPixel('learn', 'Try moving the slider and watch what happens!');
-
-      buildLessonInteractive(lesson);
+      document.getElementById('lesson-detail-title').textContent = `${l.emoji} ${l.title}`;
+      document.getElementById('lesson-content').innerHTML = l.content;
+      document.title = `${l.title} — Learn — Rivora`;
+      const img = document.getElementById('demo-image'); img.src = l.demoImage; img.alt = `Example for ${l.title}`;
+      initPixel('learn', 'Try moving the slider!');
+      buildInteractive(l);
     }
-
-    /* ---- Build the slider or info panel ---- */
-    function buildLessonInteractive(lesson) {
-      const controlsEl = document.getElementById('lesson-controls');
-      const img        = document.getElementById('demo-image');
-
-      if (lesson.interactiveType === 'slider') {
-        controlsEl.innerHTML = `
-          <div class="control-label">
-            <label for="lesson-slider">${lesson.interactiveLabel}</label>
-            <span class="control-value" id="lesson-slider-value">
-              ${lesson.sliderDefault}
-            </span>
-          </div>
-          <input
-            type="range"
-            class="control-slider"
-            id="lesson-slider"
-            min="${lesson.sliderMin}"
-            max="${lesson.sliderMax}"
-            value="${lesson.sliderDefault}"
-            aria-label="${lesson.interactiveLabel}"
-            aria-valuemin="${lesson.sliderMin}"
-            aria-valuemax="${lesson.sliderMax}"
-            aria-valuenow="${lesson.sliderDefault}"
-          />
-        `;
-
-        const slider  = document.getElementById('lesson-slider');
-        const valDisp = document.getElementById('lesson-slider-value');
-
-        slider.addEventListener('input', () => {
-          const val           = parseFloat(slider.value);
-          valDisp.textContent = val;
-          slider.setAttribute('aria-valuenow', val);
-
-          if (lesson.id === 'lesson_rotate') {
-            img.style.transform = `rotate(${val}deg)`;
-            img.style.filter    = '';
-          } else if (lesson.cssFilter) {
-            img.style.filter    = lesson.cssFilter(val);
-            img.style.transform = '';
-          }
+    function buildInteractive(l) {
+      const el = document.getElementById('lesson-controls'); const img = document.getElementById('demo-image');
+      if (l.interactiveType === 'slider') {
+        el.innerHTML = `<div class="control-label"><label for="lesson-slider">${l.interactiveLabel}</label><span class="control-value" id="lsv">${l.sliderDefault}</span></div><input type="range" class="control-slider" id="lesson-slider" min="${l.sliderMin}" max="${l.sliderMax}" value="${l.sliderDefault}" aria-label="${l.interactiveLabel}" aria-valuenow="${l.sliderDefault}" />`;
+        const s = document.getElementById('lesson-slider'), v = document.getElementById('lsv');
+        s.addEventListener('input', () => { const val = parseFloat(s.value); v.textContent = val; s.setAttribute('aria-valuenow', val);
+          if (l.id === 'lesson_rotate') { img.style.transform = `rotate(${val}deg)`; img.style.filter = ''; }
+          else if (l.cssFilter) { img.style.filter = l.cssFilter(val); img.style.transform = ''; }
         });
-
-      } else if (lesson.interactiveType === 'info') {
-        controlsEl.innerHTML = `
-          <p class="text-soft"
-             style="font-size:0.9rem; text-align:center; padding: 8px 0;">
-            💡 Cropping is interactive in the editor —
-            try it in a Challenge!
-          </p>
-        `;
-      }
+      } else { el.innerHTML = `<p class="text-soft" style="text-align:center;">💡 Try it in a Challenge!</p>`; }
     }
   </script>
-
 </body>
 </html>

@@ -3,375 +3,400 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Editor — Rivora</title>
-  <meta name="description" content="Rivora's image editor. Upload your image and make something amazing!" />
-
-  <!-- Preconnect for faster fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
-
-  <!-- PWA manifest -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5dade2" />
-
-  <!-- Preload critical CSS -->
-  <link rel="preload" href="css/base.css" as="style" />
-  <link rel="preload" href="css/components.css" as="style" />
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/editor.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Great+Vibes&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/editor.css" />
 
   <style>
-    /* Challenge prompt bar shown at top when coming from a challenge */
-    .challenge-prompt-bar {
-      background: linear-gradient(135deg, #fdebd0, #fef9e7);
-      border-bottom: 2px solid var(--color-sand-warm);
-      padding: var(--space-sm) var(--space-lg);
-      display: none;
-      align-items: center;
-      gap: var(--space-md);
-      font-size: 0.9rem;
-      color: var(--color-text);
+    /* Image picker modal */
+    .image-picker { display: none; }
+    .image-picker.active { display: block; }
+    .image-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
     }
-
-    .challenge-prompt-bar strong {
-      color: var(--color-ocean-deep);
+    .starter-img-btn {
+      border: 3px solid transparent;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+      transition: border-color var(--transition-fast), transform var(--transition-bounce);
     }
-
-    .challenge-prompt-bar p {
-      font-size: 0.85rem;
-      color: var(--color-text-soft);
-      margin: 0;
+    .starter-img-btn:hover {
+      border-color: var(--color-purple-deep);
+      transform: scale(1.04);
     }
-
-    /* Highlight the drop zone when dragging a file over it */
-    .canvas-container.drag-over {
-      outline: 3px dashed var(--color-ocean);
-      outline-offset: 4px;
-      background-color: rgba(93, 173, 226, 0.05);
+    .starter-img-btn img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      display: block;
     }
-
-    .nav-editor-label {
-      font-size: 0.9rem;
+    .starter-img-label {
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--color-text-soft);
+      padding: 4px;
+      text-align: center;
+    }
+
+    /* Preset filters */
+    .presets-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 0;
+      margin-bottom: var(--space-md);
+    }
+    .preset-btn {
+      flex-shrink: 0;
+      width: 60px;
+      text-align: center;
+      background: none;
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      padding: 4px;
+      transition: border-color var(--transition-fast), transform var(--transition-bounce);
+      font-family: var(--font-body);
+    }
+    .preset-btn:hover { border-color: var(--color-purple); transform: translateY(-2px); }
+    .preset-btn.active { border-color: var(--color-purple-deep); background: rgba(139,92,246,0.06); }
+    .preset-preview {
+      width: 52px;
+      height: 38px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--color-sky-light), var(--color-purple-light));
+      margin: 0 auto 3px;
+      overflow: hidden;
+    }
+    .preset-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preset-name {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--color-text-soft);
+    }
+
+    /* Image picker section in upload area */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--color-text-soft);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-sky-mid);
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="nav-bar" role="navigation" aria-label="Editor navigation">
-    <a href="island.html"
-       class="nav-logo"
-       aria-label="Return to Rivora island">
-      🏝 Rivora
+  <nav class="nav-bar" role="navigation">
+    <a href="./island.html" class="nav-logo">
+      <span class="logo-island">🌊</span><span class="logo-text">Rivora</span>
     </a>
-    <span class="nav-editor-label" aria-current="page">🎨 Editor</span>
+    <span class="nav-editor-label" id="editor-mode-label">🎨 Editor</span>
   </nav>
 
-  <!-- Challenge prompt bar -->
-  <div id="challenge-prompt"
-       class="challenge-prompt-bar"
-       role="complementary"
-       aria-label="Current challenge prompt">
-    <!-- Populated by editor.js when ?challenge= is in the URL -->
-  </div>
+  <div id="challenge-prompt" class="challenge-prompt-bar" role="complementary"></div>
 
-  <!-- Main editor layout -->
   <div class="editor-page">
-
     <div class="editor-main">
 
-      <!-- ======== CANVAS AREA ======== -->
+      <!-- Canvas area -->
       <div>
+        <p id="canvas-desc" class="sr-only">No image loaded.</p>
+        <div id="canvas-container" class="canvas-container" role="region" aria-describedby="canvas-desc">
 
-        <!--
-          Hidden text description of the canvas.
-          Screen readers read this to tell users what is on the canvas.
-          editor.js updates this text when an image is loaded.
-        -->
-        <p id="canvas-desc" class="sr-only">
-          No image loaded. Upload a photo to begin editing.
-        </p>
+          <!-- Upload prompt with starter images -->
+          <div id="upload-prompt" class="upload-prompt" style="padding:24px 18px;">
 
-        <div id="canvas-container"
-             class="canvas-container"
-             role="region"
-             aria-label="Image editing canvas"
-             aria-describedby="canvas-desc">
-
-          <!-- Upload prompt shown before any image is loaded -->
-          <div id="upload-prompt" class="upload-prompt">
             <span class="upload-icon" aria-hidden="true">🖼</span>
-            <h2 style="font-size: 1.3rem; margin-bottom: 8px;">
-              Upload your image
-            </h2>
-            <p>Tap here, or drag an image onto this area</p>
+            <h2 style="font-size:1.15rem; margin-bottom:4px;" id="upload-title">Pick an image to edit</h2>
+            <p id="upload-subtitle" style="font-size:0.88rem;">Choose a starter image or use your own photo!</p>
 
-            <!--
-              The label acts as a styled button.
-              Clicking it triggers the hidden file input below.
-            -->
-            <label for="file-input"
-                   class="btn btn-primary"
-                   style="margin-top: 16px; cursor: pointer;">
-              Choose a Photo 📷
+            <!-- Starter images (shown when challenge has them) -->
+            <div id="starter-images" class="image-picker">
+              <div id="starter-grid" class="image-picker-grid">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+
+            <div class="or-divider">or</div>
+
+            <!-- Own photo upload -->
+            <label for="file-input" class="btn btn-primary" style="cursor:pointer;">
+              Upload Your Own Photo 📷
             </label>
-
-            <input
-              type="file"
-              id="file-input"
-              accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
-              style="display: none;"
-              aria-label="Upload image file"
-            />
+            <input type="file" id="file-input"
+                   accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                   style="display:none;" />
           </div>
 
-          <!-- The canvas where the image is drawn and edited -->
-          <!-- Hidden until an image is loaded -->
-          <canvas
-            id="editor-canvas"
-            style="display: none;"
-            role="img"
-            aria-label="Your edited image"
-            aria-describedby="canvas-desc"
-            tabindex="0">
-          </canvas>
-
+          <canvas id="editor-canvas" style="display:none;" role="img"
+                  aria-describedby="canvas-desc" tabindex="0"></canvas>
         </div>
 
-        <!-- Pixel mascot below the canvas -->
-        <div class="pixel-section" style="margin-top: 16px;">
-          <div class="pixel-avatar"
-               style="width: 48px; height: 48px; font-size: 1.5rem;"
-               role="img"
-               aria-label="Pixel mascot">
-            🐦
-          </div>
-          <div class="pixel-bubble"
-               style="padding: 10px 14px;"
-               aria-live="polite"
-               aria-atomic="true">
-            <p id="pixel-bubble-text" style="font-size: 0.9rem;">
-              Upload a photo to start! 📷
-            </p>
+        <!-- Pixel -->
+        <div class="pixel-section" style="margin-top:12px;">
+          <div class="pixel-avatar" style="width:48px; height:48px; font-size:1.5rem;" role="img">🐰</div>
+          <div class="pixel-bubble" style="padding:10px 14px;" aria-live="polite" aria-atomic="true">
+            <p id="pixel-bubble-text" style="font-size:0.88rem;">Pick an image to start! 📷</p>
           </div>
         </div>
-
       </div>
 
-      <!-- ======== CONTROLS PANEL ======== -->
-      <!--
-        Starts at 40% opacity and not clickable.
-        editor.js enables it fully once an image is loaded.
-      -->
-      <aside id="controls-panel"
-             class="controls-panel"
-             style="opacity: 0.4; pointer-events: none;"
-             aria-label="Image editing controls">
+      <!-- Controls panel -->
+      <aside id="controls-panel" class="controls-panel" style="opacity:0.4; pointer-events:none;">
+
+        <!-- PRESET FILTERS -->
+        <h2 class="controls-title">✨ Quick Filters</h2>
+        <div class="presets-row" id="presets-row">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="control-divider"></div>
 
         <h2 class="controls-title">Tools</h2>
-
-        <div class="tool-row"
-             role="toolbar"
-             aria-label="Transform tools">
-
-          <button class="tool-btn"
-                  id="btn-rotate-left"
-                  aria-label="Rotate image left 90 degrees">
-            <span class="tool-icon" aria-hidden="true">↺</span>
-            Rotate L
-          </button>
-
-          <button class="tool-btn"
-                  id="btn-rotate-right"
-                  aria-label="Rotate image right 90 degrees">
-            <span class="tool-icon" aria-hidden="true">↻</span>
-            Rotate R
-          </button>
-
-          <button class="tool-btn"
-                  id="btn-flip-h"
-                  aria-label="Flip image horizontally">
-            <span class="tool-icon" aria-hidden="true">↔</span>
-            Flip H
-          </button>
-
-          <button class="tool-btn"
-                  id="btn-flip-v"
-                  aria-label="Flip image vertically">
-            <span class="tool-icon" aria-hidden="true">↕</span>
-            Flip V
-          </button>
-
-          <button class="tool-btn"
-                  id="btn-reset"
-                  aria-label="Reset all changes to original image">
-            <span class="tool-icon" aria-hidden="true">✕</span>
-            Reset
-          </button>
-
+        <div class="tool-row" role="toolbar">
+          <button class="tool-btn" id="btn-rotate-left"><span class="tool-icon">↺</span>Rotate L</button>
+          <button class="tool-btn" id="btn-rotate-right"><span class="tool-icon">↻</span>Rotate R</button>
+          <button class="tool-btn" id="btn-flip-h"><span class="tool-icon">↔</span>Flip H</button>
+          <button class="tool-btn" id="btn-flip-v"><span class="tool-icon">↕</span>Flip V</button>
+          <button class="tool-btn" id="btn-reset"><span class="tool-icon">✕</span>Reset</button>
         </div>
 
-        <div class="control-divider" aria-hidden="true"></div>
-
+        <div class="control-divider"></div>
         <h2 class="controls-title">Adjustments</h2>
 
-        <!-- Brightness -->
         <div class="control-group">
-          <div class="control-label">
-            <label for="slider-brightness">☀️ Brightness</label>
-            <span class="control-value"
-                  id="val-brightness"
-                  aria-hidden="true">0</span>
-          </div>
-          <input
-            type="range"
-            class="control-slider"
-            id="slider-brightness"
-            min="-100"
-            max="100"
-            value="0"
-            aria-label="Brightness"
-            aria-valuemin="-100"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          />
+          <div class="control-label"><label for="slider-brightness">☀️ Brightness</label><span class="control-value" id="val-brightness">0</span></div>
+          <input type="range" class="control-slider" id="slider-brightness" min="-100" max="100" value="0" aria-valuenow="0" />
         </div>
-
-        <!-- Contrast -->
         <div class="control-group">
-          <div class="control-label">
-            <label for="slider-contrast">⚫ Contrast</label>
-            <span class="control-value"
-                  id="val-contrast"
-                  aria-hidden="true">0</span>
-          </div>
-          <input
-            type="range"
-            class="control-slider"
-            id="slider-contrast"
-            min="-100"
-            max="100"
-            value="0"
-            aria-label="Contrast"
-            aria-valuemin="-100"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          />
+          <div class="control-label"><label for="slider-contrast">⚫ Contrast</label><span class="control-value" id="val-contrast">0</span></div>
+          <input type="range" class="control-slider" id="slider-contrast" min="-100" max="100" value="0" aria-valuenow="0" />
         </div>
-
-        <!-- Saturation -->
         <div class="control-group">
-          <div class="control-label">
-            <label for="slider-saturation">🎨 Saturation</label>
-            <span class="control-value"
-                  id="val-saturation"
-                  aria-hidden="true">0</span>
-          </div>
-          <input
-            type="range"
-            class="control-slider"
-            id="slider-saturation"
-            min="-100"
-            max="100"
-            value="0"
-            aria-label="Saturation"
-            aria-valuemin="-100"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          />
+          <div class="control-label"><label for="slider-saturation">🎨 Saturation</label><span class="control-value" id="val-saturation">0</span></div>
+          <input type="range" class="control-slider" id="slider-saturation" min="-100" max="100" value="0" aria-valuenow="0" />
         </div>
-
-        <!-- Blur -->
         <div class="control-group">
-          <div class="control-label">
-            <label for="slider-blur">💧 Blur</label>
-            <span class="control-value"
-                  id="val-blur"
-                  aria-hidden="true">0</span>
-          </div>
-          <input
-            type="range"
-            class="control-slider"
-            id="slider-blur"
-            min="0"
-            max="20"
-            value="0"
-            aria-label="Blur"
-            aria-valuemin="0"
-            aria-valuemax="20"
-            aria-valuenow="0"
-          />
+          <div class="control-label"><label for="slider-blur">💧 Blur</label><span class="control-value" id="val-blur">0</span></div>
+          <input type="range" class="control-slider" id="slider-blur" min="0" max="20" value="0" aria-valuenow="0" />
         </div>
-
       </aside>
 
     </div>
 
-    <!-- ======== ACTION BAR (bottom) ======== -->
-    <footer id="editor-actions"
-            class="editor-actions"
-            style="opacity: 0.4; pointer-events: none;"
-            role="toolbar"
-            aria-label="Save and undo actions">
-
+    <!-- Bottom action bar -->
+    <footer id="editor-actions" class="editor-actions" style="opacity:0.4; pointer-events:none;" role="toolbar">
       <div class="editor-actions-left">
-        <button id="btn-undo"
-                class="btn btn-secondary"
-                disabled
-                aria-label="Undo last change (Ctrl+Z)">
-          ↩ Undo
-        </button>
-        <button id="btn-redo"
-                class="btn btn-secondary"
-                disabled
-                aria-label="Redo last undone change (Ctrl+Y)">
-          ↪ Redo
-        </button>
+        <button id="btn-undo" class="btn btn-secondary" disabled>↩ Undo</button>
+        <button id="btn-redo" class="btn btn-secondary" disabled>↪ Redo</button>
       </div>
-
       <div class="editor-actions-right">
-        <a href="challenges.html"
-           class="btn btn-ghost"
-           aria-label="Cancel and go back to challenges">
-          Cancel
-        </a>
-        <button id="btn-save"
-                class="btn btn-coral btn-lg"
-                aria-label="Save your creation and finish">
-          Save & Finish 🎉
-        </button>
+        <a href="./island.html" class="btn btn-ghost" id="cancel-link">Cancel</a>
+        <button id="btn-save" class="btn btn-coral btn-lg">Save & Finish 🎉</button>
       </div>
-
     </footer>
-
   </div>
 
-  <!-- Toast notification -->
-  <div id="toast"
-       class="toast"
-       role="status"
-       aria-live="polite"
-       aria-atomic="true">
-  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- Scripts — order matters, load storage first -->
-  <script src="js/storage.js"></script>
-  <script src="js/challenges.js"></script>
-  <script src="js/pixel.js"></script>
-  <script src="js/editor.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/challenges.js"></script>
+  <script src="./js/pixel.js"></script>
+  <script src="./js/editor.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initPixel('editor');
+    document.addEventListener('DOMContentLoaded', function() {
+      var params = new URLSearchParams(window.location.search);
+      var challengeId = params.get('challenge');
+
+      if (challengeId) {
+        /* Challenge mode */
+        document.getElementById('editor-mode-label').textContent = '🎒 Challenge Mode';
+        document.getElementById('cancel-link').href = './challenges.html';
+
+        /* Load starter images for this challenge */
+        var challenge = getChallengeById(challengeId);
+        if (challenge && challenge.starterImages) {
+          showStarterImages(challenge.starterImages);
+        }
+
+        initPixel('editor', 'Pick a starter image or upload your own! 📷');
+      } else {
+        /* Free create mode */
+        document.getElementById('editor-mode-label').textContent = '✨ Free Create';
+        document.getElementById('upload-title').textContent = 'Upload your own photo!';
+        document.getElementById('upload-subtitle').textContent = 'Edit any photo — no rules!';
+        document.getElementById('cancel-link').href = './island.html';
+
+        /* Show general starter images for free create */
+        showStarterImages([
+          { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=70', label: 'Mountains' },
+          { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=70', label: 'Beach' },
+          { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=70', label: 'Forest' },
+          { url: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=600&q=70', label: 'Galaxy' },
+          { url: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&q=70', label: 'Cat' },
+          { url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=70', label: 'Dog' }
+        ]);
+
+        initPixel('editor', 'Free create! Pick any image to start! ✨');
+      }
+
+      /* Build preset filters */
+      buildPresets();
     });
+
+    /**
+     * showStarterImages
+     * Displays starter image thumbnails in the upload area
+     */
+    function showStarterImages(images) {
+      var container = document.getElementById('starter-images');
+      var grid = document.getElementById('starter-grid');
+
+      if (!images || images.length === 0) return;
+
+      for (var i = 0; i < images.length; i++) {
+        (function(img) {
+          var btn = document.createElement('button');
+          btn.className = 'starter-img-btn';
+          btn.setAttribute('aria-label', 'Use image: ' + img.label);
+          btn.innerHTML =
+            '<img src="' + img.url + '" alt="' + img.label + '" loading="lazy" />' +
+            '<div class="starter-img-label">' + img.label + '</div>';
+
+          btn.addEventListener('click', function() {
+            loadImageFromUrl(img.url, img.label);
+          });
+
+          grid.appendChild(btn);
+        })(images[i]);
+      }
+
+      container.classList.add('active');
+    }
+
+    /**
+     * loadImageFromUrl
+     * Loads an image from a URL (for starter images)
+     */
+    function loadImageFromUrl(url, name) {
+      showToast('Loading ' + name + '... 🖼', 2000);
+
+      var img = new Image();
+      img.crossOrigin = 'anonymous'; /* needed to export canvas later */
+
+      img.onload = function() {
+        sourceImage = img;
+
+        var maxW = 1200;
+        var scale = Math.min(1, maxW / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+
+        var desc = document.getElementById('canvas-desc');
+        if (desc) desc.textContent = 'Editing: ' + name;
+
+        var prompt = document.getElementById('upload-prompt');
+        if (prompt) prompt.style.display = 'none';
+        canvas.style.display = 'block';
+
+        enableControls();
+        redraw();
+        pushHistory();
+
+        if (typeof setPixelMessage === 'function') {
+          setPixelMessage('Nice pick! Now try the filters and sliders! 🎨');
+        }
+      };
+
+      img.onerror = function() {
+        showToast('Couldn\'t load that image. Try another one or upload your own!');
+      };
+
+      img.src = url;
+    }
+
+    /**
+     * buildPresets
+     * Creates one-click filter presets
+     */
+    function buildPresets() {
+      var presets = [
+        { name: 'Normal', brightness: 0, contrast: 0, saturation: 0, blur: 0, emoji: '🔵' },
+        { name: 'Sunset', brightness: 10, contrast: 15, saturation: 40, blur: 0, emoji: '🌅' },
+        { name: 'Ocean', brightness: -5, contrast: 10, saturation: 30, blur: 1, emoji: '🌊' },
+        { name: 'Magic', brightness: 15, contrast: 20, saturation: 50, blur: 0, emoji: '✨' },
+        { name: 'Dreamy', brightness: 10, contrast: -10, saturation: -20, blur: 3, emoji: '☁️' },
+        { name: 'Drama', brightness: -10, contrast: 50, saturation: 10, blur: 0, emoji: '🎭' },
+        { name: 'Vintage', brightness: 5, contrast: -15, saturation: -40, blur: 0, emoji: '📷' },
+        { name: 'B&W', brightness: 0, contrast: 20, saturation: -100, blur: 0, emoji: '🖤' },
+        { name: 'Pop', brightness: 5, contrast: 30, saturation: 60, blur: 0, emoji: '💥' },
+        { name: 'Soft', brightness: 15, contrast: -20, saturation: -10, blur: 2, emoji: '🌸' }
+      ];
+
+      var row = document.getElementById('presets-row');
+      if (!row) return;
+
+      for (var i = 0; i < presets.length; i++) {
+        (function(preset, index) {
+          var btn = document.createElement('button');
+          btn.className = 'preset-btn' + (index === 0 ? ' active' : '');
+          btn.setAttribute('aria-label', 'Apply ' + preset.name + ' filter');
+          btn.innerHTML =
+            '<div class="preset-preview" style="display:flex;align-items:center;justify-content:center;font-size:1.3rem;">' + preset.emoji + '</div>' +
+            '<div class="preset-name">' + preset.name + '</div>';
+
+          btn.addEventListener('click', function() {
+            /* Apply this preset */
+            state.brightness = preset.brightness;
+            state.contrast = preset.contrast;
+            state.saturation = preset.saturation;
+            state.blur = preset.blur;
+            syncSliders();
+            redraw();
+            pushHistory();
+
+            /* Update active state */
+            var allBtns = row.querySelectorAll('.preset-btn');
+            for (var j = 0; j < allBtns.length; j++) {
+              allBtns[j].classList.remove('active');
+            }
+            btn.classList.add('active');
+
+            showToast(preset.name + ' applied! ' + preset.emoji);
+          });
+
+          row.appendChild(btn);
+        })(presets[i], i);
+      }
+    }
   </script>
 
 </body>

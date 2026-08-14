@@ -1,217 +1,30 @@
-/* ============================================================
-   editor.css — Image Editor Styles
-   
-   The editor must feel SIMPLE and FRIENDLY.
-   A child should look at it and think "I can do this."
-   
-   Key layout:
-   - Canvas area (where the image lives) on top/left
-   - Controls panel below/right
-   ============================================================ */
-
-/* ---------- Editor Page Layout ---------- */
-.editor-page {
-  min-height: 100vh;
-  background-color: var(--color-sky);
-  display: flex;
-  flex-direction: column;
-}
-
-/* ---------- Editor Main Area ---------- */
-.editor-main {
-  display: grid;
-  grid-template-columns: 1fr;  /* mobile: stacked */
-  gap: var(--space-md);
-  padding: var(--space-md);
-  flex: 1;
-}
-
-/* On larger screens, side by side */
-@media (min-width: 768px) {
-  .editor-main {
-    grid-template-columns: 1fr 320px;
-    align-items: start;
-  }
-}
-
-/* ---------- Canvas Container ---------- */
-.canvas-container {
-  background-color: var(--color-white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  max-height: 60vh;
-}
-
-/* The actual canvas element */
-#editor-canvas {
-  max-width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-  display: block;
-}
-
-/* Upload prompt shown before image is loaded */
-.upload-prompt {
-  text-align: center;
-  padding: var(--space-xxl) var(--space-lg);
-  color: var(--color-text-soft);
-  cursor: pointer;
-}
-
-.upload-prompt .upload-icon {
-  font-size: 3.5rem;
-  margin-bottom: var(--space-md);
-  display: block;
-}
-
-.upload-prompt p {
-  font-size: 1rem;
-}
-
-/* ---------- Controls Panel ---------- */
-.controls-panel {
-  background-color: var(--color-white);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.controls-title {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  margin-bottom: var(--space-md);
-  color: var(--color-text);
-}
-
-/* ---------- Individual Control ---------- */
-.control-group {
-  margin-bottom: var(--space-md);
-}
-
-.control-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: var(--space-xs);
-}
-
-.control-value {
-  font-size: 0.85rem;
-  color: var(--color-ocean);
-  font-weight: 700;
-}
-
-/* Range slider */
-.control-slider {
-  width: 100%;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--color-sky);
-  outline: none;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.control-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-ocean);
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast);
-}
-
-.control-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
-
-/* Firefox */
-.control-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-ocean);
-  cursor: pointer;
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
-/* ---------- Tool Buttons Row ---------- */
-.tool-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-}
-
-.tool-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: var(--space-sm);
-  border: 2px solid transparent;
-  border-radius: var(--radius-md);
-  background-color: var(--color-sky);
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text);
-  transition:
-    background-color var(--transition-fast),
-    border-color var(--transition-fast);
-  min-width: 60px;
-  font-family: var(--font-body);
-}
-
-.tool-btn .tool-icon {
-  font-size: 1.4rem;
-}
-
-.tool-btn:hover {
-  background-color: var(--color-sand-warm);
-}
-
-.tool-btn.active {
-  border-color: var(--color-ocean);
-  background-color: rgba(93, 173, 226, 0.1);
-}
-
-/* ---------- Editor Action Bar ---------- */
-.editor-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  background-color: var(--color-white);
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-  flex-wrap: wrap;
-}
-
-.editor-actions-left,
-.editor-actions-right {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
-}
-
-/* ---------- Divider ---------- */
-.control-divider {
-  height: 1px;
-  background-color: var(--color-sky);
-  margin: var(--space-md) 0;
-}
+/* editor.css — Compact */
+.editor-page { min-height: 100vh; background: linear-gradient(180deg, var(--color-sky-light), var(--color-sky)); display: flex; flex-direction: column; }
+.editor-main { display: grid; grid-template-columns: 1fr; gap: var(--space-md); padding: var(--space-md); flex: 1; }
+@media (min-width: 768px) { .editor-main { grid-template-columns: 1fr 300px; align-items: start; } }
+.canvas-container { background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8)); backdrop-filter: blur(10px); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; min-height: 280px; max-height: 60vh; border: 2px solid rgba(255,255,255,0.5); }
+#editor-canvas { max-width: 100%; max-height: 60vh; object-fit: contain; }
+.upload-prompt { text-align: center; padding: var(--space-xxl) var(--space-lg); color: var(--color-text-soft); cursor: pointer; }
+.upload-prompt .upload-icon { font-size: 3.5rem; margin-bottom: var(--space-md); display: block; }
+.controls-panel { background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85)); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--space-lg); box-shadow: var(--shadow-sm); border: 2px solid rgba(255,255,255,0.5); }
+.controls-title { font-family: var(--font-display); font-size: 1rem; margin-bottom: var(--space-md); }
+.control-group { margin-bottom: var(--space-md); }
+.control-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; font-weight: 700; margin-bottom: var(--space-xs); }
+.control-value { font-size: 0.82rem; color: var(--color-purple-deep); font-weight: 800; background: var(--color-sky-light); padding: 2px 8px; border-radius: var(--radius-full); }
+.control-slider { width: 100%; height: 6px; border-radius: var(--radius-full); background: linear-gradient(90deg, var(--color-sky-light), var(--color-sky-mid)); outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.control-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--color-purple-deep), var(--color-blue)); cursor: pointer; box-shadow: var(--shadow-sm), 0 0 0 3px rgba(255,255,255,0.7); transition: transform var(--transition-bounce); }
+.control-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.control-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--color-purple-deep), var(--color-blue)); cursor: pointer; border: none; }
+.tool-row { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-md); }
+.tool-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--space-sm); border: 2px solid transparent; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-sky-light), var(--color-sky)); cursor: pointer; font-size: 0.7rem; font-weight: 700; color: var(--color-text); font-family: var(--font-body); transition: transform var(--transition-bounce); min-width: 52px; }
+.tool-btn .tool-icon { font-size: 1.2rem; }
+.tool-btn:hover { background: linear-gradient(135deg, var(--color-purple-light), var(--color-pink-light)); transform: translateY(-2px); }
+.tool-btn.active { border-color: var(--color-purple-deep); background: rgba(139,92,246,0.08); }
+.editor-actions { display: flex; justify-content: space-between; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(219,232,255,0.5)); backdrop-filter: blur(10px); box-shadow: 0 -2px 12px rgba(139,92,246,0.06); flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.4); }
+.editor-actions-left, .editor-actions-right { display: flex; gap: var(--space-sm); align-items: center; }
+.control-divider { height: 2px; background: linear-gradient(90deg, transparent, var(--color-sky), transparent); margin: var(--space-md) 0; }
+.challenge-prompt-bar { background: linear-gradient(135deg, var(--color-sand-light), var(--color-sand-warm)); border-bottom: 2px solid rgba(250,227,184,0.4); padding: var(--space-sm) var(--space-lg); display: none; align-items: center; gap: var(--space-md); font-size: 0.88rem; }
+.challenge-prompt-bar strong { color: var(--color-purple-deep); }
+.challenge-prompt-bar p { font-size: 0.82rem; color: var(--color-text-warm); margin: 0; }
+.canvas-container.drag-over { outline: 3px dashed var(--color-purple-deep); outline-offset: 3px; }
+.nav-editor-label { font-size: 0.88rem; font-weight: 700; color: var(--color-text-soft); }
